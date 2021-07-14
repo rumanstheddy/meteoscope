@@ -1,1 +1,2 @@
-# Wcast - a free to use weather forecast app
+# Wcast 
+A free to use weather forecast app
