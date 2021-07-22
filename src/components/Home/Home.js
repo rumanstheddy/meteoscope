@@ -1,18 +1,28 @@
 import React from "react";
 import "./Home.scss";
-import { Jumbotron } from "reactstrap";
+import { Jumbotron, Input, Button, InputGroup } from "reactstrap";
 
 const Home = () => {
   return (
     <div className="container">
       <Jumbotron>
-        <p className="display-1 mt-4">Wcast</p>
-        <p className="display-6 pt-2">Weather prediction for 5 days in:</p>
-        <p className="lead">
-          <i class="fas fa-city"></i>
-          <b> New York</b>
+        <p className="display-1 mt-4">
+          <i class="fas fa-sun" id="logo"></i> Wcast
         </p>
+        <p className="display-6 pt-2">Search the current weather for a city:</p>
+        <InputGroup id="searchInputGrp">
+          <Input
+            type="search"
+            name="citySearch"
+            id="citySearch"
+            placeholder="City"
+          />
+          <Button type="button" color="primary" id="citySearchBtn">
+            Search
+          </Button>
+        </InputGroup>
       </Jumbotron>
+      {/* TODO: Use API to fetch data and create other component to display weather */}
     </div>
   );
 };
