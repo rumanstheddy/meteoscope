@@ -1,47 +1,67 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.scss";
-import {
-  Container,
-  Jumbotron,
-  Input,
-  Button,
-  InputGroup,
-  Row,
-} from "reactstrap";
-import CityCard from "../CityCard/CityCard.js";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import { SunIcon } from "@chakra-ui/icons";
+import { Input } from "@chakra-ui/react";
+import { getLocationsFromSearch } from "../../apis/WeatherAPI";
 
 const Home = () => {
+  const [searchResults, setSearchResults] = useState({});
+
+  useEffect(() => {
+    const fetchResults = async () => {
+      // let results = await getLocationsFromSearch();
+      // console.log("results: ", results);
+      // setSearchResults(results);
+      getLocationsFromSearch().then((data) => {
+        setSearchResults(data.results);
+      });
+    };
+
+    fetchResults();
+  }, []);
+
+  const searchPholder = "Search the current weather for a location 📍";
+  console.log("searchResults: ", searchResults);
+
   return (
-    <Container>
-      <Jumbotron>
-        <p className="display-1 mt-4">
-          <i class="fas fa-sun" id="logo"></i> Wcast
-        </p>
-        <p className="display-6 pt-2">Search the current weather for a city:</p>
-      </Jumbotron>
-      <Row>
-        <InputGroup id="searchInputGrp">
-          <Input
-            type="search"
-            name="citySearch"
-            id="searchInputFld"
-            placeholder="City"
-          />
-          <Button type="button" color="primary" id="citySearchBtn">
-            <i class="fas fa-search"></i>
-          </Button>
-        </InputGroup>
-      </Row>
-      <Row id="cardRow" className="row-container">
-        {/* TODO: Use API to fetch data and create other component to display cities */}
-        <CityCard />
-        <CityCard />
-        <CityCard />
-        <CityCard />
-        <CityCard />
-        <CityCard />
-      </Row>
-    </Container>
+    <Box>
+      {/* TODO: make the web page transparent */}
+      <Flex
+        flexDirection={"column"}
+        alignItems={"center"}
+        justifyContent={"center"}
+        pt={"30px"}
+      >
+        <SunIcon boxSize={20} color=" #FFB300" pr="10px" id="sun-icon-logo" />
+        <Text
+          bgGradient="linear(to-l, #FFDF00, #FFD600, #FFCD00, #FFC500, #FFBC00, #FFB300)"
+          bgClip="text"
+          fontSize="6xl"
+          fontWeight="extrabold"
+          // textShadow="#FFDF00 5px 5px 10px"
+        >
+          W-cast
+        </Text>
+      </Flex>
+      <Box mt={[50, null, null, 30]} mb="30px">
+        <Input
+          placeholder={searchPholder}
+          size="lg"
+          maxW="40vw"
+          textAlign="center"
+          boxShadow="md"
+        />
+      </Box>
+      <Box>
+        {/* TODO: Learn more about async, await and map function */}
+        {searchResults.map((location) => (
+          <div>
+            {location.name}, {location.admin1}, {location.country}
+          </div>
+        ))}
+      </Box>
+    </Box>
   );
 };
 

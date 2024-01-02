@@ -1,12 +1,13 @@
 import "./App.scss";
-import "bootstrap/dist/css/bootstrap.css";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 import Home from "./components/Home/Home";
+import { ChakraProvider } from "@chakra-ui/react";
 
 function App() {
   return (
     <div className="App">
-      <Home />
+      <ChakraProvider>
+        <Home />
+      </ChakraProvider>
     </div>
   );
 }
