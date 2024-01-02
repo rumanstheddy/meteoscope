@@ -4,25 +4,44 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { SunIcon } from "@chakra-ui/icons";
 import { Input } from "@chakra-ui/react";
 import { getLocationsFromSearch } from "../../apis/WeatherAPI";
+import useDebounce from "../../hooks/useDebounce";
 
 const Home = () => {
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState({});
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
   useEffect(() => {
     const fetchResults = async () => {
-      // let results = await getLocationsFromSearch();
-      // console.log("results: ", results);
-      // setSearchResults(results);
-      getLocationsFromSearch().then((data) => {
-        setSearchResults(data.results);
-      });
+      setLoading(true);
+      try {
+        // let results = await getLocationsFromSearch();
+        // console.log("results: ", results);
+        // setSearchResults(results);
+        // TODO: Learn more about Array.from and spread operator
+        getLocationsFromSearch(debouncedSearchQuery, 5).then((data) => {
+          console.log("typeof data.results", typeof data.results);
+          setSearchResults(data.results);
+          setLoading(false);
+        });
+      } catch {
+        setError("Error fetching data. Please try again.");
+      }
     };
 
-    fetchResults();
-  }, []);
+    if (debouncedSearchQuery) fetchResults();
+  }, [debouncedSearchQuery]);
 
   const searchPholder = "Search the current weather for a location 📍";
   console.log("searchResults: ", searchResults);
+
+  const handleSearch = (e) => {
+    console.log(e.target.value);
+    setSearchQuery(e.target.value);
+  };
 
   return (
     <Box>
@@ -44,23 +63,26 @@ const Home = () => {
           W-cast
         </Text>
       </Flex>
-      <Box mt={[50, null, null, 30]} mb="30px">
+      <Box mt={[50, null, null, 30]}>
         <Input
           placeholder={searchPholder}
           size="lg"
           maxW="40vw"
           textAlign="center"
           boxShadow="md"
+          onChange={(e) => handleSearch(e)}
         />
       </Box>
-      <Box>
-        {/* TODO: Learn more about async, await and map function */}
-        {searchResults.map((location) => (
-          <div>
-            {location.name}, {location.admin1}, {location.country}
-          </div>
-        ))}
-      </Box>
+      {/* TODO: Learn more about async, await and map function */}
+      {/* {searchResults &&
+        searchResults.map((location) => {
+          console.log(searchResults);
+          return (
+            <Box>
+              {location.name}, {location.admin1}, {location.country}
+            </Box>
+          );
+        })} */}
     </Box>
   );
 };

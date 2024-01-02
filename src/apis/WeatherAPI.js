@@ -1,11 +1,10 @@
-const getLocationsFromSearch = async () => {
-  const apiUrl =
-    "https://geocoding-api.open-meteo.com/v1/search?name=hyderabad&count=3&language=en&format=json";
+const getLocationsFromSearch = async (searchQuery, resultCount) => {
+  const apiUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${searchQuery}&count=${resultCount}&language=en&format=json`;
 
   const response = await fetch(apiUrl);
-  const results = await response.json();
+  const data = await response.json();
 
-  return results;
+  return data;
 };
 
 export { getLocationsFromSearch };
