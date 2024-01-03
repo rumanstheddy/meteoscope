@@ -5,6 +5,7 @@ import { SunIcon } from "@chakra-ui/icons";
 import { Input } from "@chakra-ui/react";
 import { getLocationsFromSearch } from "../../apis/WeatherAPI";
 import useDebounce from "../../hooks/useDebounce";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -59,7 +60,7 @@ const Home = () => {
         <Input
           placeholder={searchPholder}
           size="lg"
-          maxW={["60vw", null, "50vw", "50vw"]}
+          maxW={["60vw", null, "50vw", "40vw"]}
           textAlign="center"
           boxShadow="sm"
           onChange={(e) => handleSearch(e)}
@@ -71,7 +72,7 @@ const Home = () => {
         <Box
           boxShadow="md"
           // flexDirection={"column"}
-          maxW={["60vw", null, "50vw", "50vw"]}
+          maxW={["60vw", null, "50vw", "40vw"]}
           // alignItems={"center"}
           // justifyContent={"center"}
           alignItems="center"
@@ -81,17 +82,29 @@ const Home = () => {
           mr="auto"
         >
           {searchResults &&
-            searchResults.map((location) => (
-              <Box
-                pt={["40px", null, null, "15px"]}
-                pb={["40px", null, null, "15px"]}
-                borderRadius="5px"
-                // border="1px"
-                // borderColor="var(--chakra-colors-gray-300)"
-              >
-                {location.name}, {location.admin1}, {location.country}
-              </Box>
-            ))}
+            searchResults.map((location) => {
+              console.log(typeof location);
+              console.log(location);
+              return (
+                <Box
+                  pt={["40px", null, null, "15px"]}
+                  pb={["40px", null, null, "15px"]}
+                  borderRadius="5px"
+                  // border="1px"
+                  // borderColor="var(--chakra-colors-gray-300)"
+                >
+                  <Link
+                    to="/forecast"
+                    state={{
+                      latitude: location.latitude,
+                      longitude: location.longitude,
+                    }}
+                  >
+                    {location.name}, {location.admin1}, {location.country}
+                  </Link>
+                </Box>
+              );
+            })}
         </Box>
       </Box>
     </Box>
