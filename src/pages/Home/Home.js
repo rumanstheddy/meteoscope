@@ -16,7 +16,6 @@ const Home = () => {
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
-      // TODO: Learn more about Array.from and spread operator
       getLocationsFromSearch(debouncedSearchQuery, 5).then((data) => {
         console.log("typeof data.results", typeof data.results);
         setSearchResults(data.results || []);
@@ -60,23 +59,41 @@ const Home = () => {
         <Input
           placeholder={searchPholder}
           size="lg"
-          maxW="40vw"
+          maxW={["60vw", null, "50vw", "50vw"]}
           textAlign="center"
-          boxShadow="md"
+          boxShadow="sm"
           onChange={(e) => handleSearch(e)}
         />
       </Box>
       {/* TODO: Learn more about async, await and map function */}
       {loading && <Text>loading...</Text>}
-      {searchResults &&
-        searchResults.map((location) => {
-          console.log(searchResults);
-          return (
-            <Box>
-              {location.name}, {location.admin1}, {location.country}
-            </Box>
-          );
-        })}
+      <Box textAlign="center" ml="auto" mr="auto">
+        <Box
+          boxShadow="md"
+          // flexDirection={"column"}
+          maxW={["60vw", null, "50vw", "50vw"]}
+          // alignItems={"center"}
+          // justifyContent={"center"}
+          alignItems="center"
+          borderRadius="5px"
+          textAlign="center"
+          ml="auto"
+          mr="auto"
+        >
+          {searchResults &&
+            searchResults.map((location) => (
+              <Box
+                pt={["40px", null, null, "15px"]}
+                pb={["40px", null, null, "15px"]}
+                borderRadius="5px"
+                // border="1px"
+                // borderColor="var(--chakra-colors-gray-300)"
+              >
+                {location.name}, {location.admin1}, {location.country}
+              </Box>
+            ))}
+        </Box>
+      </Box>
     </Box>
   );
 };

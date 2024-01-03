@@ -1,13 +1,17 @@
+import { Route, Routes } from "react-router-dom";
 import "./App.scss";
-import Home from "./components/Home/Home";
-import { ChakraProvider } from "@chakra-ui/react";
+import Home from "./pages/Home/Home";
+import Forecast from "./pages/Forecast/Forecast";
+import NotFound from "./pages/NotFound/NotFound";
 
 function App() {
   return (
     <div className="App">
-      <ChakraProvider>
-        <Home />
-      </ChakraProvider>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="forecast" element={<Forecast />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </div>
   );
 }
