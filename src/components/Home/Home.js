@@ -8,31 +8,24 @@ import useDebounce from "../../hooks/useDebounce";
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState({});
-  const [error, setError] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const debouncedSearchQuery = useDebounce(searchQuery, 500);
+  const debouncedSearchQuery = useDebounce(searchQuery);
 
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
-      try {
-        // let results = await getLocationsFromSearch();
-        // console.log("results: ", results);
-        // setSearchResults(results);
-        // TODO: Learn more about Array.from and spread operator
-        getLocationsFromSearch(debouncedSearchQuery, 5).then((data) => {
-          console.log("typeof data.results", typeof data.results);
-          setSearchResults(data.results);
-          setLoading(false);
-        });
-      } catch {
-        setError("Error fetching data. Please try again.");
-      }
+      // TODO: Learn more about Array.from and spread operator
+      getLocationsFromSearch(debouncedSearchQuery, 5).then((data) => {
+        console.log("typeof data.results", typeof data.results);
+        setSearchResults(data.results || []);
+        setLoading(false);
+      });
     };
 
     if (debouncedSearchQuery) fetchResults();
+    return () => setSearchResults([]);
   }, [debouncedSearchQuery]);
 
   const searchPholder = "Search the current weather for a location 📍";
@@ -74,7 +67,8 @@ const Home = () => {
         />
       </Box>
       {/* TODO: Learn more about async, await and map function */}
-      {/* {searchResults &&
+      {loading && <Text>loading...</Text>}
+      {searchResults &&
         searchResults.map((location) => {
           console.log(searchResults);
           return (
@@ -82,7 +76,7 @@ const Home = () => {
               {location.name}, {location.admin1}, {location.country}
             </Box>
           );
-        })} */}
+        })}
     </Box>
   );
 };
