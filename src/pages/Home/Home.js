@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./Home.scss";
-import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
-import { SunIcon } from "@chakra-ui/icons";
+import { Box, Flex, Heading, Icon, Spinner } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
 import { getLocationsFromSearch } from "../../apis/WeatherAPI";
 import useDebounce from "../../hooks/useDebounce";
 import { Link } from "react-router-dom";
+import { WiSunrise } from "react-icons/wi";
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -34,55 +34,72 @@ const Home = () => {
   };
 
   return (
-    <Box>
+    <Flex
+      width={"100vw"}
+      height={"80vh"}
+      alignContent={"center"}
+      justifyContent={"center"}
+      flexDirection="column"
+    >
       {/* TODO: make the web page transparent */}
       <Flex
         flexDirection={"column"}
         alignItems={"center"}
         justifyContent={"center"}
-        pt={"30px"}
       >
-        <SunIcon boxSize={20} color=" #FFB300" pr="10px" id="sun-icon-logo" />
-        <Text
+        <Icon
+          as={WiSunrise}
+          // boxSize={20}
+          color=" #FFB300"
+          pr="10px"
+          id="sun-icon-logo"
+          // w={40}
+          w={[60, null, null, 40]}
+          // h={20}
+          h={[40, null, null, 40]}
+        />
+        <Heading
           bgGradient="linear(to-l, #FFDF00, #FFD600, #FFCD00, #FFC500, #FFBC00, #FFB300)"
           bgClip="text"
-          fontSize="6xl"
-          fontWeight="extrabold"
+          fontSize="7xl"
+          fontWeight="600"
           // textShadow="#FFDF00 5px 5px 10px"
+          mt="-20px"
         >
-          W-cast
-        </Text>
+          Meteoscope
+        </Heading>
       </Flex>
       <Box mt={[50, null, null, 30]}>
         <Input
           placeholder={searchPholder}
           size="lg"
-          maxW={["60vw", null, "50vw", "40vw"]}
+          w={["60vw", null, "50vw", "40vw"]}
           textAlign="center"
           boxShadow="sm"
           onChange={(e) => handleSearch(e)}
         />
       </Box>
       {/* TODO: Learn more about async, await and map function */}
-      {loading && <Spinner />}
-      <Box textAlign="center" ml="auto" mr="auto">
-        <Box
-          boxShadow="md"
-          // flexDirection={"column"}
-          maxW={["60vw", null, "50vw", "40vw"]}
-          // alignItems={"center"}
-          // justifyContent={"center"}
-          alignItems="center"
-          borderRadius="5px"
-          textAlign="center"
-          ml="auto"
-          mr="auto"
-        >
-          {searchResults &&
-            searchResults.map((location) => {
-              console.log(typeof location);
-              console.log(location);
-              return (
+      {loading && <Spinner mt="50px" />}
+      {/* <Box textAlign="center" ml="auto" mr="auto"> */}
+      <Box
+        boxShadow="md"
+        // flexDirection={"column"}
+        w={["60vw", null, "50vw", "40vw"]}
+        // alignItems={"center"}
+        // justifyContent={"center"}
+        alignItems="center"
+        borderRadius="5px"
+        textAlign="center"
+        ml="auto"
+        mr="auto"
+      >
+        {searchResults &&
+          searchResults.map((location) => {
+            console.log(typeof location);
+            console.log(location);
+            return (
+              <Link to="/forecast" state={location}>
                 <Box
                   pt={["40px", null, null, "15px"]}
                   pb={["40px", null, null, "15px"]}
@@ -91,15 +108,14 @@ const Home = () => {
                   // borderColor="var(--chakra-colors-gray-300)"
                   key={`${location.latitude}${location.longitude}`}
                 >
-                  <Link to="/forecast" state={location}>
-                    {location.name}, {location.admin1}, {location.country}
-                  </Link>
+                  {location.name}, {location.admin1}, {location.country}
                 </Box>
-              );
-            })}
-        </Box>
+              </Link>
+            );
+          })}
       </Box>
-    </Box>
+      {/* </Box> */}
+    </Flex>
   );
 };
 

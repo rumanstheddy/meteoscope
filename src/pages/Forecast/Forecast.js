@@ -3,6 +3,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Flex,
   Heading,
   Spinner,
   Text,
@@ -51,7 +52,7 @@ const Forecast = () => {
         <Box>
           {displayDate(forecastData)}
           <Text fontSize="6xl">
-            {forecastData.current.temperature_2m}{" "}
+            {forecastData.current.temperature_2m}
             {forecastData.current_units.temperature_2m}
           </Text>
           <Text fontSize="2xl">
@@ -62,7 +63,13 @@ const Forecast = () => {
   };
 
   return (
-    <Box>
+    <Flex
+      width={"100vw"}
+      height={"70vh"}
+      alignContent={"center"}
+      justifyContent={"center"}
+      flexDirection="column"
+    >
       <Card
         maxW={["60vw", null, "50vw", "40vw"]}
         textAlign="center"
@@ -77,14 +84,14 @@ const Forecast = () => {
           </Heading>
         </CardHeader>
         <CardBody>
-          {loading && <Spinner />}
+          {loading && <Spinner mt="50px" />}
           {displayForecastInfo()}
         </CardBody>
       </Card>
       <Text as="ins" color="blue">
         <Link to="/">back</Link>
       </Text>
-    </Box>
+    </Flex>
   );
 };
 
