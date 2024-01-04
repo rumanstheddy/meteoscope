@@ -76,6 +76,7 @@ const Forecast = () => {
         ml="auto"
         mr="auto"
         mt="20vh"
+        color="#666"
       >
         <CardHeader>
           <Heading size="md">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Home.scss";
-import { Box, Flex, Heading, Icon, Spinner } from "@chakra-ui/react";
+import { Box, Flex, Heading, Icon, Spinner, Text } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
 import { getLocationsFromSearch } from "../../apis/WeatherAPI";
 import useDebounce from "../../hooks/useDebounce";
@@ -27,7 +27,9 @@ const Home = () => {
     return () => setSearchResults([]);
   }, [debouncedSearchQuery]);
 
-  const searchPholder = "Search the current weather for a location 📍";
+  const searchPholderText = "Enter a location 📍";
+  const summaryText =
+    "Meteoscope harnesses the Open Meteo API to provide precise weather  forecasts for any location.";
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -69,9 +71,17 @@ const Home = () => {
           Meteoscope
         </Heading>
       </Flex>
-      <Box mt={[50, null, null, 30]}>
+      <Box mt={[30, null, null, null]}>
+        <Text
+          color="#666"
+          ml={[25, null, null, 30]}
+          mr={[25, null, null, 30]}
+          mb="20px"
+        >
+          {summaryText}
+        </Text>
         <Input
-          placeholder={searchPholder}
+          placeholder={searchPholderText}
           size="lg"
           w={["60vw", null, "50vw", "40vw"]}
           textAlign="center"
@@ -80,7 +90,15 @@ const Home = () => {
         />
       </Box>
       {/* TODO: Learn more about async, await and map function */}
-      {loading && <Spinner mt="50px" />}
+      {loading && (
+        <Spinner
+          mt="50px"
+          alignItems="center"
+          textAlign="center"
+          ml="auto"
+          mr="auto"
+        />
+      )}
       {/* <Box textAlign="center" ml="auto" mr="auto"> */}
       <Box
         boxShadow="md"
