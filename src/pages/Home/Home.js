@@ -53,7 +53,6 @@ const Home = () => {
           as={WiSunrise}
           // boxSize={20}
           color=" #FFB300"
-          pr="10px"
           id="sun-icon-logo"
           // w={40}
           w={[60, null, null, 40]}
@@ -77,6 +76,7 @@ const Home = () => {
           ml={[25, null, null, 30]}
           mr={[25, null, null, 30]}
           mb="20px"
+          fontSize="lg"
         >
           {summaryText}
         </Text>
