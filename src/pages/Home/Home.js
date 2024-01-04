@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Home.scss";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
 import { SunIcon } from "@chakra-ui/icons";
 import { Input } from "@chakra-ui/react";
 import { getLocationsFromSearch } from "../../apis/WeatherAPI";
@@ -18,7 +18,6 @@ const Home = () => {
     const fetchResults = async () => {
       setLoading(true);
       getLocationsFromSearch(debouncedSearchQuery, 5).then((data) => {
-        console.log("typeof data.results", typeof data.results);
         setSearchResults(data.results || []);
         setLoading(false);
       });
@@ -29,10 +28,8 @@ const Home = () => {
   }, [debouncedSearchQuery]);
 
   const searchPholder = "Search the current weather for a location 📍";
-  console.log("searchResults: ", searchResults);
 
   const handleSearch = (e) => {
-    console.log(e.target.value);
     setSearchQuery(e.target.value);
   };
 
@@ -67,7 +64,7 @@ const Home = () => {
         />
       </Box>
       {/* TODO: Learn more about async, await and map function */}
-      {loading && <Text>loading...</Text>}
+      {loading && <Spinner />}
       <Box textAlign="center" ml="auto" mr="auto">
         <Box
           boxShadow="md"
@@ -92,14 +89,9 @@ const Home = () => {
                   borderRadius="5px"
                   // border="1px"
                   // borderColor="var(--chakra-colors-gray-300)"
+                  key={`${location.latitude}${location.longitude}`}
                 >
-                  <Link
-                    to="/forecast"
-                    state={{
-                      latitude: location.latitude,
-                      longitude: location.longitude,
-                    }}
-                  >
+                  <Link to="/forecast" state={location}>
                     {location.name}, {location.admin1}, {location.country}
                   </Link>
                 </Box>
