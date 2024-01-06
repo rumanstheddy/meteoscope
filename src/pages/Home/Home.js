@@ -38,7 +38,7 @@ const Home = () => {
 
   const handleBoxHeight = debouncedSearchQuery
     ? ["85%", "70%", "70%", "65%"]
-    : ["55%", null, "null", "50%"];
+    : ["55%", "45%", null, null];
 
   return (
     <Flex
@@ -67,7 +67,7 @@ const Home = () => {
         pb={"40px"}
         mb={"100px"}
         bg={"white"}
-        mt={["20px", null, null, null]}
+        mt={["100px", null, null, null]}
       >
         {/* TODO: make the web page transparent */}
         <Flex
