@@ -49,7 +49,7 @@ const Home = () => {
         mt={"-40px"}
       />
       <Heading
-        bgGradient="linear(to-l, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
+        bgGradient="linear(to-r, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
         bgClip="text"
         fontSize={["6xl", "7xl", null, null]}
         fontWeight="600"
@@ -110,8 +110,6 @@ const Home = () => {
         height={"100vh"}
         justifyContent={"center"}
         alignItems={"center"}
-        bgGradient="linear(to-l, #ffe533, #ffdf00, #ccb200)"
-        sx={{ "clip-path": "circle(40% at 100vw 100vh)" }}
       >
         <Flex
           width={["90%", null, "70%", "50%"]}
@@ -126,6 +124,7 @@ const Home = () => {
           mb={"100px"}
           bg={"white"}
           mt={["100px", null, null, null]}
+          zIndex={"2"}
         >
           {/* TODO: make the web page transparent */}
           {displayHomeInfo()}
@@ -144,6 +143,14 @@ const Home = () => {
           <ResultsBox searchResults={searchResults} />
           {/* </Box> */}
         </Flex>
+        <Box
+          width={"100vw"}
+          height={"100vh"}
+          bgGradient="linear(to-r, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
+          sx={{ "clip-path": "circle(30% at 95vw 95vh)" }}
+          position={"absolute"}
+          zIndex={"1"}
+        ></Box>
       </Flex>
     </Flex>
   );
