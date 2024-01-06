@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./Home.scss";
 import { Box, Flex, Heading, Icon, Spinner, Text } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
 import { getLocationsFromSearch } from "../../apis/WeatherAPI";
@@ -50,7 +49,7 @@ const Home = () => {
         mt={"-40px"}
       />
       <Heading
-        bgGradient="linear(to-l, #FFDF00, #FFD600, #FFCD00, #FFC500, #FFBC00, #FFB300)"
+        bgGradient="linear(to-l, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
         bgClip="text"
         fontSize={["6xl", "7xl", null, null]}
         fontWeight="600"
@@ -104,40 +103,47 @@ const Home = () => {
       // bgImage="url(./killmong.jpg)"
       // bgSize={"cover"}
       // bgColor={"black"}
-
-      bgGradient="linear(to-l, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
-      position={"relative"}
+      bgGradient="linear(to-l, #66b2ff, #39f, #007fff)"
     >
       <Flex
-        width={["90%", null, "70%", "50%"]}
-        height={handleBoxHeight}
-        alignContent={"center"}
+        width={"100vw"}
+        height={"100vh"}
         justifyContent={"center"}
-        flexDirection="column"
-        boxShadow="2xl"
-        rounded="2xl"
-        pt={"40px"}
-        pb={"40px"}
-        mb={"100px"}
-        bg={"white"}
-        mt={["100px", null, null, null]}
+        alignItems={"center"}
+        bgGradient="linear(to-l, #ffe533, #ffdf00, #ccb200)"
+        sx={{ "clip-path": "circle(40% at 100vw 100vh)" }}
       >
-        {/* TODO: make the web page transparent */}
-        {displayHomeInfo()}
-        {displayInputBox()}
-        {/* TODO: Learn more about async, await and map function */}
-        {loading && (
-          <Spinner
-            mt="50px"
-            alignItems="center"
-            textAlign="center"
-            ml="auto"
-            mr="auto"
-          />
-        )}
-        {/* <Box textAlign="center" ml="auto" mr="auto"> */}
-        <ResultsBox searchResults={searchResults} />
-        {/* </Box> */}
+        <Flex
+          width={["90%", null, "70%", "50%"]}
+          height={handleBoxHeight}
+          alignContent={"center"}
+          justifyContent={"center"}
+          flexDirection="column"
+          boxShadow="2xl"
+          rounded="2xl"
+          pt={"40px"}
+          pb={"40px"}
+          mb={"100px"}
+          bg={"white"}
+          mt={["100px", null, null, null]}
+        >
+          {/* TODO: make the web page transparent */}
+          {displayHomeInfo()}
+          {displayInputBox()}
+          {/* TODO: Learn more about async, await and map function */}
+          {loading && (
+            <Spinner
+              mt="50px"
+              alignItems="center"
+              textAlign="center"
+              ml="auto"
+              mr="auto"
+            />
+          )}
+          {/* <Box textAlign="center" ml="auto" mr="auto"> */}
+          <ResultsBox searchResults={searchResults} />
+          {/* </Box> */}
+        </Flex>
       </Flex>
     </Flex>
   );
