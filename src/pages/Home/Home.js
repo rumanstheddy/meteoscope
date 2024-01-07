@@ -40,7 +40,7 @@ const Home = () => {
       <Icon
         as={WiSunrise}
         // boxSize={20}
-        color=" #FFB300"
+        color="#FFB300"
         id="sun-icon-logo"
         // w={40}
         w={[20, null, 20, null]}
@@ -146,8 +146,9 @@ const Home = () => {
         <Box
           width={"100vw"}
           height={"100vh"}
-          bgGradient="linear(to-r, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
-          sx={{ "clip-path": "circle(30% at 95vw 95vh)" }}
+          // bgGradient="linear(to-r, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
+          bg={"#FFC500"}
+          sx={{ "clip-path": "circle(25% at 100vw 100vh)" }}
           position={"absolute"}
           zIndex={"1"}
         ></Box>

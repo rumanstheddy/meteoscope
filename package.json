@@ -1,6 +1,6 @@
 {
-  "homepage": "http://rumanstheddy.github.io/w-cast",
-  "name": "w-cast",
+  "homepage": "http://rumanstheddy.github.io/meteoscope",
+  "name": "meteoscope",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
