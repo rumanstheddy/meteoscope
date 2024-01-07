@@ -55,6 +55,7 @@ const Home = () => {
         fontWeight="600"
         // textShadow="#FFDF00 5px 5px 10px"
         mt={["-60px", null, "-50px", null]}
+        letterSpacing={"-1px"}
       >
         Meteoscope
       </Heading>
@@ -69,6 +70,7 @@ const Home = () => {
         mr={[25, null, null, 30]}
         mb="20px"
         fontSize="lg"
+        fontWeight={"350"}
       >
         {summaryText}
       </Text>
@@ -147,7 +149,7 @@ const Home = () => {
           width={"100vw"}
           height={"100vh"}
           // bgGradient="linear(to-r, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
-          bg={"#FFC500"}
+          bg={"#FFD134"}
           sx={{ "clip-path": "circle(25% at 100vw 100vh)" }}
           position={"absolute"}
           zIndex={"1"}

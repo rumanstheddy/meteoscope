@@ -1,11 +1,11 @@
 import { extendTheme } from "@chakra-ui/react";
-import "@fontsource/roboto";
-import "@fontsource/roboto-condensed";
+import "@fontsource-variable/manrope";
+import "@fontsource-variable/rubik";
 
 const theme = extendTheme({
   fonts: {
-    heading: `"Roboto Condensed", sans-serif`,
-    body: `"Roboto", sans-serif`,
+    heading: `"Manrope Variable", sans-serif`,
+    body: `"Rubik Variable", sans-serif`,
   },
 });
 
