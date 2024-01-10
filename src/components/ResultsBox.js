@@ -7,7 +7,7 @@ const ResultsBox = ({ searchResults }) => {
     <Box
       boxShadow="md"
       // flexDirection={"column"}
-      w={["60vw", null, "50vw", "40vw"]}
+      w={["85vw", "70vw", "50vw", "40vw"]}
       // alignItems={"center"}
       // justifyContent={"center"}
       alignItems="center"
@@ -19,6 +19,7 @@ const ResultsBox = ({ searchResults }) => {
     >
       {searchResults &&
         searchResults.map((location) => {
+          console.log(searchResults);
           return (
             <Link
               to="/forecast"
@@ -26,10 +27,10 @@ const ResultsBox = ({ searchResults }) => {
               key={`${location.latitude}${location.longitude}`}
             >
               <Box
-                pt={["15px", null, null, "15px"]}
-                pb={["15px", null, null, "15px"]}
+                pt={["10px", null, null, "15px"]}
+                pb={["10px", null, null, "15px"]}
                 // h={["55px", null, null, "15px"]}
-                fontSize={["15px", null, "16px", null]}
+                fontSize={["14px", null, "16px", null]}
                 borderRadius="5px"
                 // border="1px"
                 // borderColor="var(--chakra-colors-gray-300)"

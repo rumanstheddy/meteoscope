@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Box, Flex, Heading, Icon, Spinner, Text } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
-import { getLocationsFromSearch } from "../../apis/WeatherAPI";
-import useDebounce from "../../hooks/useDebounce";
+import { getLocationsFromSearch } from "../apis/WeatherAPI";
+import useDebounce from "../hooks/useDebounce";
 import { WiSunrise } from "react-icons/wi";
-import ResultsBox from "../../components/ResultsBox/ResultsBox";
+import ResultsBox from "../components/ResultsBox";
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -49,13 +49,16 @@ const Home = () => {
         mt={"-40px"}
       />
       <Heading
+        as={"h1"}
         bgGradient="linear(to-r, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
         bgClip="text"
-        fontSize={["6xl", "7xl", null, null]}
+        fontSize={["5xl", "6xl", "7xl", null]}
         fontWeight="600"
         // textShadow="#FFDF00 5px 5px 10px"
         mt={["-60px", null, "-50px", null]}
         letterSpacing={"-1px"}
+        pl={["30px", null, null, null]}
+        pr={[["30px", null, null, null]]}
       >
         Meteoscope
       </Heading>
@@ -82,6 +85,7 @@ const Home = () => {
         boxShadow="sm"
         onChange={(e) => handleSearch(e)}
         _focus={{ borderColor: "#FFCD00", boxShadow: "none" }}
+        fontSize={["14px", null, "16px", null]}
       />
     </Box>
   );
@@ -91,7 +95,7 @@ const Home = () => {
   };
 
   const handleBoxHeight = debouncedSearchQuery
-    ? ["85%", "70%", "70%", "65%"]
+    ? ["85%", "70%", "80%", null]
     : ["55%", "45%", null, null];
 
   return (
@@ -120,7 +124,7 @@ const Home = () => {
           justifyContent={"center"}
           flexDirection="column"
           boxShadow="2xl"
-          rounded="2xl"
+          rounded="3xl"
           pt={"40px"}
           pb={"40px"}
           mb={"100px"}
@@ -148,8 +152,8 @@ const Home = () => {
         <Box
           width={"100vw"}
           height={"100vh"}
-          // bgGradient="linear(to-r, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
-          bg={"#FFD134"}
+          bgGradient="radial-gradient(#FFBC00, #F4D150)"
+          // bg={"#E3B60F"}
           sx={{ "clip-path": "circle(25% at 100vw 100vh)" }}
           position={"absolute"}
           zIndex={"1"}

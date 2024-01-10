@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.scss";
-import Home from "./pages/Home/Home";
-import Forecast from "./pages/Forecast/Forecast";
-import NotFound from "./pages/NotFound/NotFound";
+import Home from "./pages/Home";
+import Forecast from "./pages/Forecast";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (

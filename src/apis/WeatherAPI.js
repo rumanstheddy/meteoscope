@@ -12,7 +12,7 @@ const getLocationsFromSearch = async (searchQuery, resultCount) => {
 };
 
 const getForecastFromLocation = async (latitude, longitude) => {
-  const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,is_day,precipitation,rain,showers,snowfall`;
+  const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,cloud_cover,wind_speed_10m`;
   const data = await callAPI(apiUrl);
   return data;
 };
