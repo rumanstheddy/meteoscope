@@ -13,6 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { getForecastFromLocation } from "../apis/WeatherAPI";
+import ReactAnimatedWeather from "react-animated-weather";
 
 const Forecast = () => {
   const location = useLocation();
@@ -133,43 +134,52 @@ const Forecast = () => {
             templateRows={"repeat(2, 1fr)"}
             templateColumns={"repeat(3, 1fr)"}
             gap={"4"}
+            m="20px"
           >
-            <GridItem rowSpan={"2"} colSpan={"1"}>
-              <Text
-                color="black"
-                // ml={[25, null, null, 30]}
-                // mr={[25, null, null, 30]}
-                mb="20px"
-                fontSize="lg"
-                fontWeight={"500"}
-              >
-                {location.state.name}, {location.state.admin1},{" "}
-                {location.state.country} ({location.state.country_code})
-              </Text>
-              <Heading
-                as={"p"}
-                // bgGradient="linear(to-r, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
-                bgClip="text"
-                fontSize={["5xl", "6xl", "7xl", null]}
-                fontWeight="500"
-                color="black"
-                // textShadow="#FFDF00 5px 5px 10px"
-                // mt={["-60px", null, "-50px", null]}
-                letterSpacing={"-1px"}
-                // pl={["30px", null, null, null]}
-                // pr={[["30px", null, null, null]]}
-              >
-                {forecastData && forecastData.current
-                  ? forecastData.current.temperature_2m
-                  : ""}
-                {forecastData && forecastData.current
-                  ? forecastData.current_units.temperature_2m
-                  : ""}
-              </Heading>
+            <GridItem rowSpan={"2"} colSpan={"1"} ml={"20px"}>
+              <Flex flexDirection={"column"} alignContent={"center"}>
+                <Text
+                  color="black"
+                  // ml={[25, null, null, 30]}
+                  // mr={[25, null, null, 30]}
+                  mb="20px"
+                  fontSize="lg"
+                  fontWeight={"500"}
+                >
+                  {location.state.name}, {location.state.admin1},{" "}
+                  {location.state.country} ({location.state.country_code})
+                </Text>
+                <Heading
+                  as={"p"}
+                  // bgGradient="linear(to-r, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
+                  bgClip="text"
+                  fontSize={["5xl", "6xl", "7xl", null]}
+                  fontWeight="500"
+                  color="black"
+                  // textShadow="#FFDF00 5px 5px 10px"
+                  // mt={["-60px", null, "-50px", null]}
+                  letterSpacing={"-1px"}
+                  // pl={["30px", null, null, null]}
+                  // pr={[["30px", null, null, null]]}
+                  mt={"50px"}
+                >
+                  {forecastData && forecastData.current
+                    ? forecastData.current.temperature_2m
+                    : ""}
+                  {forecastData && forecastData.current
+                    ? forecastData.current_units.temperature_2m
+                    : ""}
+                </Heading>
+              </Flex>
             </GridItem>
-            <GridItem rowSpan={"2"} colSpan={"2"}>
-              {displayDate(forecastData)}
-              <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+            <GridItem rowSpan={"2"} colSpan={"2"} mr={"20px"}>
+              <Flex
+                alignContent={"center"}
+                justifyContent={"center"}
+                flexDirection={"column"}
+              >
+                {displayDate(forecastData)}
+                {/* <Grid templateColumns="repeat(2, 1fr)" gap={6}>
                 <GridItem w="100%" h="100%">
                   <Text
                     color="#666"
@@ -189,7 +199,40 @@ const Forecast = () => {
                   </Text>
                 </GridItem>
                 <GridItem w="100%" h="100%"></GridItem>
-              </Grid>
+              </Grid> */}
+                <Flex
+                  alignContent={"center"}
+                  justifyContent={"space-around"}
+                  flexDirection={"row"}
+                  mt={"50px"}
+                >
+                  <Text
+                    color="#666"
+                    // ml={[25, null, null, 30]}
+                    // mr={[25, null, null, 30]}
+                    // mb="20px"
+                    fontSize="lg"
+                    fontWeight={"400"}
+                    alignSelf={"center"}
+                  >
+                    Feels like{" "}
+                    {forecastData && forecastData.current
+                      ? forecastData.current.apparent_temperature
+                      : ""}
+                    {forecastData && forecastData.current
+                      ? forecastData.current_units.apparent_temperature
+                      : ""}
+                  </Text>
+                  <Box>
+                    <ReactAnimatedWeather
+                      icon={"CLOUDY"}
+                      color={"black"}
+                      size={120}
+                      animate={true}
+                    />
+                  </Box>
+                </Flex>
+              </Flex>
             </GridItem>
             <GridItem colSpan={"1"}>
               {forecastData && forecastData.current
