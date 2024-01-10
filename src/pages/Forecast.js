@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { getForecastFromLocation } from "../apis/WeatherAPI";
 import ReactAnimatedWeather from "react-animated-weather";
+import { LuMoon } from "react-icons/lu";
+import { LuSun } from "react-icons/lu";
 
 const Forecast = () => {
   const location = useLocation();
@@ -42,7 +44,7 @@ const Forecast = () => {
   const displayDate = (forecastData) => {
     if (forecastData && forecastData.current && forecastData.current.time)
       return (
-        <Text fontSize="2xl">
+        <Text fontSize="2xl" fontWeight={"500"}>
           {new Date(forecastData.current.time).toLocaleString()}{" "}
           {forecastData.timezone}
         </Text>
@@ -117,7 +119,7 @@ const Forecast = () => {
         <Flex
           width={["90%", null, "70%", "50%"]}
           height={["55%", "45%", null, null]}
-          alignContent={"center"}
+          alignContent={"space-around"}
           justifyContent={"center"}
           flexDirection="column"
           boxShadow="2xl"
@@ -129,139 +131,149 @@ const Forecast = () => {
           mt={["100px", null, null, null]}
           zIndex={"2"}
         >
-          <Grid
-            h={"100%"}
-            templateRows={"repeat(2, 1fr)"}
-            templateColumns={"repeat(3, 1fr)"}
-            gap={"4"}
-            m="20px"
+          <Flex
+            justifyContent={"space-around"}
+            alignItems={"center"}
+            w={"100%"}
+            flexDirection={"row"}
           >
-            <GridItem rowSpan={"2"} colSpan={"1"} ml={"20px"}>
-              <Flex flexDirection={"column"} alignContent={"center"}>
-                <Text
-                  color="black"
-                  // ml={[25, null, null, 30]}
-                  // mr={[25, null, null, 30]}
-                  mb="20px"
-                  fontSize="lg"
-                  fontWeight={"500"}
-                >
-                  {location.state.name}, {location.state.admin1},{" "}
-                  {location.state.country} ({location.state.country_code})
-                </Text>
-                <Heading
-                  as={"p"}
-                  // bgGradient="linear(to-r, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
-                  bgClip="text"
-                  fontSize={["5xl", "6xl", "7xl", null]}
-                  fontWeight="500"
-                  color="black"
-                  // textShadow="#FFDF00 5px 5px 10px"
-                  // mt={["-60px", null, "-50px", null]}
-                  letterSpacing={"-1px"}
-                  // pl={["30px", null, null, null]}
-                  // pr={[["30px", null, null, null]]}
-                  mt={"50px"}
-                >
-                  {forecastData && forecastData.current
-                    ? forecastData.current.temperature_2m
-                    : ""}
-                  {forecastData && forecastData.current
-                    ? forecastData.current_units.temperature_2m
-                    : ""}
-                </Heading>
-              </Flex>
-            </GridItem>
-            <GridItem rowSpan={"2"} colSpan={"2"} mr={"20px"}>
-              <Flex
-                alignContent={"center"}
-                justifyContent={"center"}
-                flexDirection={"column"}
+            <Text
+              color="black"
+              // ml={[25, null, null, 30]}
+              // mr={[25, null, null, 30]}
+              fontSize="lg"
+              fontWeight={"500"}
+            >
+              {location.state.name}, {location.state.admin1},{" "}
+              {location.state.country} ({location.state.country_code})
+            </Text>
+            <Text
+              color="#666"
+              // ml={[25, null, null, 30]}
+              // mr={[25, null, null, 30]}
+              fontSize="4xl"
+              fontWeight={"500"}
+            >
+              {forecastData &&
+              forecastData.current &&
+              forecastData.current.is_day ? (
+                <LuSun />
+              ) : (
+                <LuMoon />
+              )}
+            </Text>
+            {displayDate(forecastData)}
+          </Flex>
+          <Flex
+            flexDirection={"row"}
+            alignContent={"center"}
+            justifyContent={"space-around"}
+            w={"100%"}
+            mt={"50px"}
+            mb={"50px"}
+          >
+            {/* <Text
+                color="black"
+                // ml={[25, null, null, 30]}
+                // mr={[25, null, null, 30]}
+                mb="20px"
+                fontSize="lg"
+                fontWeight={"500"}
               >
-                {displayDate(forecastData)}
-                {/* <Grid templateColumns="repeat(2, 1fr)" gap={6}>
-                <GridItem w="100%" h="100%">
-                  <Text
-                    color="#666"
-                    // ml={[25, null, null, 30]}
-                    // mr={[25, null, null, 30]}
-                    // mb="20px"
-                    fontSize="lg"
-                    fontWeight={"400"}
-                  >
-                    Feels like{" "}
-                    {forecastData && forecastData.current
-                      ? forecastData.current.apparent_temperature
-                      : ""}
-                    {forecastData && forecastData.current
-                      ? forecastData.current_units.apparent_temperature
-                      : ""}
-                  </Text>
-                </GridItem>
-                <GridItem w="100%" h="100%"></GridItem>
-              </Grid> */}
-                <Flex
-                  alignContent={"center"}
-                  justifyContent={"space-around"}
-                  flexDirection={"row"}
-                  mt={"50px"}
-                >
-                  <Text
-                    color="#666"
-                    // ml={[25, null, null, 30]}
-                    // mr={[25, null, null, 30]}
-                    // mb="20px"
-                    fontSize="lg"
-                    fontWeight={"400"}
-                    alignSelf={"center"}
-                  >
-                    Feels like{" "}
-                    {forecastData && forecastData.current
-                      ? forecastData.current.apparent_temperature
-                      : ""}
-                    {forecastData && forecastData.current
-                      ? forecastData.current_units.apparent_temperature
-                      : ""}
-                  </Text>
-                  <Box>
-                    <ReactAnimatedWeather
-                      icon={"CLOUDY"}
-                      color={"black"}
-                      size={120}
-                      animate={true}
-                    />
-                  </Box>
-                </Flex>
-              </Flex>
-            </GridItem>
-            <GridItem colSpan={"1"}>
+                {location.state.name}, {location.state.admin1},{" "}
+                {location.state.country} ({location.state.country_code})
+              </Text> */}
+            <Text
+              // bgGradient="linear(to-r, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
+              bgClip="text"
+              fontSize={["5xl", "6xl", "7xl", null]}
+              fontWeight="400"
+              color="black"
+              // textShadow="#FFDF00 5px 5px 10px"
+              // mt={["-60px", null, "-50px", null]}
+              letterSpacing={"-1px"}
+              // pl={["30px", null, null, null]}
+              // pr={[["30px", null, null, null]]}
+              // mt={"50px"}
+            >
+              {forecastData && forecastData.current
+                ? forecastData.current.temperature_2m
+                : ""}
+              {forecastData && forecastData.current
+                ? forecastData.current_units.temperature_2m
+                : ""}
+            </Text>
+            <Flex
+              alignContent={"center"}
+              justifyContent={"center"}
+              flexDirection={"column"}
+            >
+              <Text
+                color="#666"
+                fontSize="lg"
+                fontWeight={"400"}
+                alignSelf={"center"}
+                pl={"20px"}
+              >
+                Feels like{" "}
+              </Text>
+              <Text
+                color="#666"
+                fontSize="5xl"
+                fontWeight={"400"}
+                alignSelf={"center"}
+              >
+                {forecastData && forecastData.current
+                  ? forecastData.current.apparent_temperature
+                  : ""}
+                {forecastData && forecastData.current
+                  ? forecastData.current_units.apparent_temperature
+                  : ""}
+              </Text>
+            </Flex>
+            <Box>
+              <ReactAnimatedWeather
+                icon={"CLOUDY"}
+                color={"black"}
+                size={120}
+                animate={true}
+              />
+            </Box>
+          </Flex>
+          <Flex
+            flexDirection={"row"}
+            alignContent={"center"}
+            justifyContent={"space-around"}
+            w={"100%"}
+          >
+            <Box ml={"20px"}>
+              Humidity{" "}
               {forecastData && forecastData.current
                 ? forecastData.current.relative_humidity_2m
                 : ""}
               {forecastData && forecastData.current
                 ? forecastData.current_units.relative_humidity_2m
-                : ""}{" "}
-              Humidity
-            </GridItem>
-            <GridItem colSpan={"1"}>
+                : ""}
+            </Box>
+            <Box ml={"20px"}>
+              Precipitation{" "}
               {forecastData && forecastData.current
                 ? forecastData.current.precipitation
                 : ""}{" "}
               {forecastData && forecastData.current
                 ? forecastData.current_units.precipitation
-                : ""}{" "}
-              Precipitation
-            </GridItem>
-            <GridItem colSpan={"1"}>
+                : ""}
+            </Box>
+            <Box ml={"20px"}>
+              Wind Speed{" "}
               {forecastData && forecastData.current
                 ? forecastData.current.wind_speed_10m
                 : ""}{" "}
               {forecastData && forecastData.current
                 ? forecastData.current_units.wind_speed_10m
-                : ""}{" "}
-              Wind Speed
-            </GridItem>
-          </Grid>
+                : ""}
+            </Box>
+          </Flex>
         </Flex>
       </Flex>
     </Flex>
