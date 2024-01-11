@@ -157,7 +157,7 @@ const Home = () => {
           sx={{ "clip-path": "circle(25% at 100vw 100vh)" }}
           position={"absolute"}
           zIndex={"1"}
-        ></Box>
+        />
       </Flex>
     </Flex>
   );
