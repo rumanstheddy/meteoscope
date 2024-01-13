@@ -68,44 +68,24 @@ const Forecast = () => {
     }
   };
 
-  const displayStars = () => {
-    if (forecastData && forecastData.current && !forecastData.current.is_day) {
-      return (
-        <Box>
-          <Text
-            fontSize={"8xl"}
-            position={"absolute"}
-            zIndex={"1"}
-            left={"21vw"}
-            top={"21vh"}
-            color={"#CAC9C3"}
-          >
-            <HiStar />
-          </Text>
-          <Text
-            fontSize={"8xl"}
-            position={"absolute"}
-            zIndex={"1"}
-            left={"30vw"}
-            bottom={"20vh"}
-            color={"#CAC9C3"}
-          >
-            <HiStar />
-          </Text>
-          <Text
-            fontSize={"8xl"}
-            position={"absolute"}
-            zIndex={"1"}
-            right={"20vw"}
-            top={"30vh"}
-            color={"#CAC9C3"}
-          >
-            <HiStar />
-          </Text>
-        </Box>
-      );
-    }
-  };
+  const displayStars = (starPosList) => (
+    <Box>
+      {starPosList.map((starPos) => (
+        <Text
+          fontSize={"8xl"}
+          position={"absolute"}
+          zIndex={"1"}
+          color={"#CAC9C3"}
+          top={starPos.top}
+          right={starPos.right}
+          bottom={starPos.bottom}
+          left={starPos.left}
+        >
+          <HiStar />
+        </Text>
+      ))}
+    </Box>
+  );
 
   const setColorTheme = (pageElement) => {
     if (pageElement && pageElement === "sunOrMoon") {
@@ -134,6 +114,288 @@ const Forecast = () => {
       return gradient;
     }
   };
+
+  const returnInfo = (weatherInfo, isUnit) => {
+    if (forecastData && forecastData.current) {
+      return !isUnit
+        ? forecastData.current[weatherInfo]
+        : forecastData.current_units[weatherInfo];
+    }
+  };
+
+  const renderDesktopView = () => (
+    <Hide below={"48em"}>
+      <Flex
+        justifyContent={"center"}
+        alignItems={"center"}
+        // w={"100%"}
+        flexDirection={"column"}
+      >
+        <Text
+          color="black"
+          // ml={[25, null, null, 30]}
+          // mr={[25, null, null, 30]}
+          fontSize="md"
+          fontWeight={"600"}
+        >
+          {location.state.name}, {location.state.admin1},{" "}
+          {location.state.country} ({location.state.country_code})
+        </Text>
+
+        <Text
+          bgClip="text"
+          fontSize={["5xl", "6xl", "7xl", null]}
+          fontWeight="400"
+          color="black"
+          letterSpacing={"-1px"}
+          mt={"5rem"}
+          mb={"5rem"}
+        >
+          {returnInfo("temperature_2m", false)}
+          {returnInfo("temperature_2m", true)}
+        </Text>
+        <Flex flexDirection={"column"} justifyContent={"center"}>
+          <Text fontSize={"5xl"} alignSelf={"center"}>
+            <WiHumidity />
+          </Text>
+          <Text fontSize={"lg"} mt={"1rem"}>
+            Humidity {returnInfo("relative_humidity_2m", false)}
+            {returnInfo("relative_humidity_2m", true)}
+          </Text>
+        </Flex>
+      </Flex>
+      <Flex
+        flexDirection={"column"}
+        alignContent={"center"}
+        justifyContent={"center"}
+      >
+        <Text
+          color="black"
+          fontSize="3xl"
+          fontWeight={"500"}
+          alignSelf={"center"}
+        >
+          {returnInfo("is_day", false) ? <BsSun /> : <BsMoonStars />}
+        </Text>
+
+        {/* <Text
+                color="black"
+                // ml={[25, null, null, 30]}
+                // mr={[25, null, null, 30]}
+                mb="20px"
+                fontSize="lg"
+                fontWeight={"500"}
+              >
+                {location.state.name}, {location.state.admin1},{" "}
+                {location.state.country} ({location.state.country_code})
+              </Text> */}
+
+        <Flex
+          alignContent={"center"}
+          justifyContent={"center"}
+          flexDirection={"column"}
+          mt={"5rem"}
+          mb={"5rem"}
+        >
+          <Text
+            color="#666"
+            fontSize="lg"
+            fontWeight={"500"}
+            alignSelf={"center"}
+            // pl={"10px"}
+          >
+            Feels like{" "}
+          </Text>
+          <Text
+            color="#666"
+            fontSize="5xl"
+            fontWeight={"400"}
+            alignSelf={"center"}
+          >
+            {forecastData && forecastData.current
+              ? forecastData.current.apparent_temperature
+              : ""}
+            {forecastData && forecastData.current
+              ? forecastData.current_units.apparent_temperature
+              : ""}
+          </Text>
+        </Flex>
+        <Flex flexDirection={"column"} justifyContent={"center"}>
+          <Text fontSize={"5xl"} alignSelf={"center"}>
+            <IoRainyOutline />
+          </Text>
+          <Text fontSize={"lg"} mt={"1rem"}>
+            Precipitation{" "}
+            {forecastData && forecastData.current
+              ? forecastData.current.precipitation
+              : ""}{" "}
+            {forecastData && forecastData.current
+              ? forecastData.current_units.precipitation
+              : ""}
+          </Text>
+        </Flex>
+      </Flex>
+      <Flex
+        flexDirection={"column"}
+        alignContent={"center"}
+        justifyContent={"center"}
+        // w={"100%"}
+      >
+        {displayDate()}
+        <Box alignSelf={"center"} mt={"5rem"} mb={"5rem"}>
+          {displayWeatherIcon()}
+        </Box>
+        <Flex flexDirection={"column"} justifyContent={"center"}>
+          <Text fontSize={"5xl"} alignSelf={"center"}>
+            <FiWind />
+          </Text>
+          <Text fontSize={"lg"} mt={"1rem"}>
+            Wind Speed{" "}
+            {forecastData && forecastData.current
+              ? forecastData.current.wind_speed_10m
+              : ""}{" "}
+            {forecastData && forecastData.current
+              ? forecastData.current_units.wind_speed_10m
+              : ""}
+          </Text>
+        </Flex>
+      </Flex>
+    </Hide>
+  );
+
+  const renderMobileView = () => (
+    <Show below="48em">
+      <Flex
+        justifyContent={"center"}
+        alignItems={"center"}
+        // w={"100%"}
+        flexDirection={"column"}
+      >
+        <Text
+          color="black"
+          // ml={[25, null, null, 30]}
+          // mr={[25, null, null, 30]}
+          fontSize="3xl"
+          fontWeight={"500"}
+          alignSelf={"center"}
+          pb={"15px"}
+        >
+          {forecastData &&
+          forecastData.current &&
+          forecastData.current.is_day ? (
+            <BsSun />
+          ) : (
+            <BsMoonStars />
+          )}
+        </Text>
+        <Text
+          color="black"
+          // ml={[25, null, null, 30]}
+          // mr={[25, null, null, 30]}
+          fontSize="sm"
+          fontWeight={"600"}
+        >
+          {location.state.name}, {location.state.admin1},{" "}
+          {location.state.country} ({location.state.country_code})
+        </Text>
+        {displayDate()}
+        <Box alignSelf={"center"}>{displayWeatherIcon()}</Box>
+        <Text
+          // bgGradient="linear(to-r, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
+          bgClip="text"
+          fontSize={["4xl", "5xl", "7xl", null]}
+          fontWeight="400"
+          color="black"
+          // textShadow="#FFDF00 5px 5px 10px"
+          // mt={["-60px", null, "-50px", null]}
+          letterSpacing={"-1px"}
+          // pl={["30px", null, null, null]}
+          // pr={[["30px", null, null, null]]}
+          // mt={"5rem"}
+          mb={"10px"}
+        >
+          {forecastData && forecastData.current
+            ? forecastData.current.temperature_2m
+            : ""}
+          {forecastData && forecastData.current
+            ? forecastData.current_units.temperature_2m
+            : ""}
+        </Text>
+        <Flex
+          alignContent={"center"}
+          justifyContent={"center"}
+          flexDirection={"column"}
+          // mt={"5rem"}
+          mb={"10px"}
+        >
+          <Text
+            color="#666"
+            fontSize="sm"
+            fontWeight={"500"}
+            alignSelf={"center"}
+            // pl={"10px"}
+          >
+            Feels like{" "}
+          </Text>
+          <Text
+            color="#666"
+            fontSize="2xl"
+            fontWeight={"400"}
+            alignSelf={"center"}
+          >
+            {forecastData && forecastData.current
+              ? forecastData.current.apparent_temperature
+              : ""}
+            {forecastData && forecastData.current
+              ? forecastData.current_units.apparent_temperature
+              : ""}
+          </Text>
+        </Flex>
+        <Flex flexDirection={"column"} justifyContent={"center"}>
+          <Text fontSize={"4xl"} alignSelf={"center"} mt={"10px"} mb={"5px"}>
+            <WiHumidity />
+          </Text>
+          <Text fontSize={"md"}>
+            Humidity{" "}
+            {forecastData && forecastData.current
+              ? forecastData.current.relative_humidity_2m
+              : ""}
+            {forecastData && forecastData.current
+              ? forecastData.current_units.relative_humidity_2m
+              : ""}
+          </Text>
+        </Flex>
+        <Flex flexDirection={"column"} justifyContent={"center"}>
+          <Text fontSize={"4xl"} alignSelf={"center"} mt={"10px"} mb={"5px"}>
+            <IoRainyOutline />
+          </Text>
+          <Text fontSize={"md"}>
+            Precipitation{" "}
+            {forecastData && forecastData.current
+              ? forecastData.current.precipitation
+              : ""}{" "}
+            {forecastData && forecastData.current
+              ? forecastData.current_units.precipitation
+              : ""}
+          </Text>
+        </Flex>
+        <Flex flexDirection={"column"} justifyContent={"center"}>
+          <Text fontSize={"4xl"} alignSelf={"center"} mt={"10px"} mb={"5px"}>
+            <FiWind />
+          </Text>
+          <Text fontSize={"md"}>
+            Wind Speed{" "}
+            {forecastData && forecastData.current
+              ? forecastData.current.wind_speed_10m
+              : ""}{" "}
+            {forecastData && forecastData.current
+              ? forecastData.current_units.wind_speed_10m
+              : ""}
+          </Text>
+        </Flex>
+      </Flex>
+    </Show>
+  );
 
   return (
     <Flex
@@ -169,325 +431,18 @@ const Forecast = () => {
           mt={["100px", null, null, null]}
           zIndex={"2"}
         >
-          <Hide below={"48em"}>
-            <Flex
-              justifyContent={"center"}
-              alignItems={"center"}
-              // w={"100%"}
-              flexDirection={"column"}
-            >
-              <Text
-                color="black"
-                // ml={[25, null, null, 30]}
-                // mr={[25, null, null, 30]}
-                fontSize="md"
-                fontWeight={"600"}
-              >
-                {location.state.name}, {location.state.admin1},{" "}
-                {location.state.country} ({location.state.country_code})
-              </Text>
-
-              <Text
-                // bgGradient="linear(to-r, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
-                bgClip="text"
-                fontSize={["5xl", "6xl", "7xl", null]}
-                fontWeight="400"
-                color="black"
-                // textShadow="#FFDF00 5px 5px 10px"
-                // mt={["-60px", null, "-50px", null]}
-                letterSpacing={"-1px"}
-                // pl={["30px", null, null, null]}
-                // pr={[["30px", null, null, null]]}
-                mt={"5rem"}
-                mb={"5rem"}
-              >
-                {forecastData && forecastData.current
-                  ? forecastData.current.temperature_2m
-                  : ""}
-                {forecastData && forecastData.current
-                  ? forecastData.current_units.temperature_2m
-                  : ""}
-              </Text>
-              <Flex flexDirection={"column"} justifyContent={"center"}>
-                <Text fontSize={"5xl"} alignSelf={"center"}>
-                  <WiHumidity />
-                </Text>
-                <Text fontSize={"lg"} mt={"1rem"}>
-                  Humidity{" "}
-                  {forecastData && forecastData.current
-                    ? forecastData.current.relative_humidity_2m
-                    : ""}
-                  {forecastData && forecastData.current
-                    ? forecastData.current_units.relative_humidity_2m
-                    : ""}
-                </Text>
-              </Flex>
-            </Flex>
-            <Flex
-              flexDirection={"column"}
-              alignContent={"center"}
-              justifyContent={"center"}
-              // w={"100%"}
-              // mt={"50px"}
-              // mb={"50px"}
-            >
-              <Text
-                color="black"
-                // ml={[25, null, null, 30]}
-                // mr={[25, null, null, 30]}
-                fontSize="3xl"
-                fontWeight={"500"}
-                alignSelf={"center"}
-              >
-                {forecastData &&
-                forecastData.current &&
-                forecastData.current.is_day ? (
-                  <BsSun />
-                ) : (
-                  <BsMoonStars />
-                )}
-              </Text>
-
-              {/* <Text
-                color="black"
-                // ml={[25, null, null, 30]}
-                // mr={[25, null, null, 30]}
-                mb="20px"
-                fontSize="lg"
-                fontWeight={"500"}
-              >
-                {location.state.name}, {location.state.admin1},{" "}
-                {location.state.country} ({location.state.country_code})
-              </Text> */}
-
-              <Flex
-                alignContent={"center"}
-                justifyContent={"center"}
-                flexDirection={"column"}
-                mt={"5rem"}
-                mb={"5rem"}
-              >
-                <Text
-                  color="#666"
-                  fontSize="lg"
-                  fontWeight={"500"}
-                  alignSelf={"center"}
-                  // pl={"10px"}
-                >
-                  Feels like{" "}
-                </Text>
-                <Text
-                  color="#666"
-                  fontSize="5xl"
-                  fontWeight={"400"}
-                  alignSelf={"center"}
-                >
-                  {forecastData && forecastData.current
-                    ? forecastData.current.apparent_temperature
-                    : ""}
-                  {forecastData && forecastData.current
-                    ? forecastData.current_units.apparent_temperature
-                    : ""}
-                </Text>
-              </Flex>
-              <Flex flexDirection={"column"} justifyContent={"center"}>
-                <Text fontSize={"5xl"} alignSelf={"center"}>
-                  <IoRainyOutline />
-                </Text>
-                <Text fontSize={"lg"} mt={"1rem"}>
-                  Precipitation{" "}
-                  {forecastData && forecastData.current
-                    ? forecastData.current.precipitation
-                    : ""}{" "}
-                  {forecastData && forecastData.current
-                    ? forecastData.current_units.precipitation
-                    : ""}
-                </Text>
-              </Flex>
-            </Flex>
-            <Flex
-              flexDirection={"column"}
-              alignContent={"center"}
-              justifyContent={"center"}
-              // w={"100%"}
-            >
-              {displayDate()}
-              <Box alignSelf={"center"} mt={"5rem"} mb={"5rem"}>
-                {displayWeatherIcon()}
-              </Box>
-              <Flex flexDirection={"column"} justifyContent={"center"}>
-                <Text fontSize={"5xl"} alignSelf={"center"}>
-                  <FiWind />
-                </Text>
-                <Text fontSize={"lg"} mt={"1rem"}>
-                  Wind Speed{" "}
-                  {forecastData && forecastData.current
-                    ? forecastData.current.wind_speed_10m
-                    : ""}{" "}
-                  {forecastData && forecastData.current
-                    ? forecastData.current_units.wind_speed_10m
-                    : ""}
-                </Text>
-              </Flex>
-            </Flex>
-          </Hide>
-
+          {renderDesktopView()}
+          {renderMobileView()}
           {/* Mobile Screen */}
-          <Show below="48em">
-            <Flex
-              justifyContent={"center"}
-              alignItems={"center"}
-              // w={"100%"}
-              flexDirection={"column"}
-            >
-              <Text
-                color="black"
-                // ml={[25, null, null, 30]}
-                // mr={[25, null, null, 30]}
-                fontSize="3xl"
-                fontWeight={"500"}
-                alignSelf={"center"}
-                pb={"15px"}
-              >
-                {forecastData &&
-                forecastData.current &&
-                forecastData.current.is_day ? (
-                  <BsSun />
-                ) : (
-                  <BsMoonStars />
-                )}
-              </Text>
-              <Text
-                color="black"
-                // ml={[25, null, null, 30]}
-                // mr={[25, null, null, 30]}
-                fontSize="sm"
-                fontWeight={"600"}
-              >
-                {location.state.name}, {location.state.admin1},{" "}
-                {location.state.country} ({location.state.country_code})
-              </Text>
-              {displayDate()}
-              <Box alignSelf={"center"}>{displayWeatherIcon()}</Box>
-              <Text
-                // bgGradient="linear(to-r, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
-                bgClip="text"
-                fontSize={["4xl", "5xl", "7xl", null]}
-                fontWeight="400"
-                color="black"
-                // textShadow="#FFDF00 5px 5px 10px"
-                // mt={["-60px", null, "-50px", null]}
-                letterSpacing={"-1px"}
-                // pl={["30px", null, null, null]}
-                // pr={[["30px", null, null, null]]}
-                // mt={"5rem"}
-                mb={"10px"}
-              >
-                {forecastData && forecastData.current
-                  ? forecastData.current.temperature_2m
-                  : ""}
-                {forecastData && forecastData.current
-                  ? forecastData.current_units.temperature_2m
-                  : ""}
-              </Text>
-              <Flex
-                alignContent={"center"}
-                justifyContent={"center"}
-                flexDirection={"column"}
-                // mt={"5rem"}
-                mb={"10px"}
-              >
-                <Text
-                  color="#666"
-                  fontSize="sm"
-                  fontWeight={"500"}
-                  alignSelf={"center"}
-                  // pl={"10px"}
-                >
-                  Feels like{" "}
-                </Text>
-                <Text
-                  color="#666"
-                  fontSize="2xl"
-                  fontWeight={"400"}
-                  alignSelf={"center"}
-                >
-                  {forecastData && forecastData.current
-                    ? forecastData.current.apparent_temperature
-                    : ""}
-                  {forecastData && forecastData.current
-                    ? forecastData.current_units.apparent_temperature
-                    : ""}
-                </Text>
-              </Flex>
-              <Flex flexDirection={"column"} justifyContent={"center"}>
-                <Text
-                  fontSize={"4xl"}
-                  alignSelf={"center"}
-                  mt={"10px"}
-                  mb={"5px"}
-                >
-                  <WiHumidity />
-                </Text>
-                <Text fontSize={"md"}>
-                  Humidity{" "}
-                  {forecastData && forecastData.current
-                    ? forecastData.current.relative_humidity_2m
-                    : ""}
-                  {forecastData && forecastData.current
-                    ? forecastData.current_units.relative_humidity_2m
-                    : ""}
-                </Text>
-              </Flex>
-              <Flex flexDirection={"column"} justifyContent={"center"}>
-                <Text
-                  fontSize={"4xl"}
-                  alignSelf={"center"}
-                  mt={"10px"}
-                  mb={"5px"}
-                >
-                  <IoRainyOutline />
-                </Text>
-                <Text fontSize={"md"}>
-                  Precipitation{" "}
-                  {forecastData && forecastData.current
-                    ? forecastData.current.precipitation
-                    : ""}{" "}
-                  {forecastData && forecastData.current
-                    ? forecastData.current_units.precipitation
-                    : ""}
-                </Text>
-              </Flex>
-              <Flex flexDirection={"column"} justifyContent={"center"}>
-                <Text
-                  fontSize={"4xl"}
-                  alignSelf={"center"}
-                  mt={"10px"}
-                  mb={"5px"}
-                >
-                  <FiWind />
-                </Text>
-                <Text fontSize={"md"}>
-                  Wind Speed{" "}
-                  {forecastData && forecastData.current
-                    ? forecastData.current.wind_speed_10m
-                    : ""}{" "}
-                  {forecastData && forecastData.current
-                    ? forecastData.current_units.wind_speed_10m
-                    : ""}
-                </Text>
-              </Flex>
-            </Flex>
-          </Show>
         </Flex>
         {setColorTheme("sunOrMoon")}
-        {displayStars()}
-        {/* <Text as="ins" color="white">
-          <Link to="/">back</Link>
-        </Text> */}
+        {displayStars([
+          { top: "21vh", right: "", bottom: "", left: "21vw" },
+          { top: "", right: "", bottom: "20vh", left: "30vw" },
+          { top: "30vh", right: "20vw", bottom: "", left: "" },
+        ])}
       </Flex>
     </Flex>
   );
 };
-
 export default Forecast;
