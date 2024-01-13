@@ -135,6 +135,7 @@ const Home = () => {
               textAlign="center"
               ml="auto"
               mr="auto"
+              thickness="3px"
             />
           )}
           <ResultsBox searchResults={searchResults} />

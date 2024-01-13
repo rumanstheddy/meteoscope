@@ -1,12 +1,12 @@
-import { Flex, Hide, Show, Text } from "@chakra-ui/react";
-import { useEffect, useState, React } from "react";
+import { Flex, Hide, Show, Spinner, Text } from "@chakra-ui/react";
+import { useEffect, useState, React, Fragment } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { getForecastFromLocation } from "../apis/WeatherAPI";
-import { BsMoonStars } from "react-icons/bs";
-import { BsSun } from "react-icons/bs";
 import DayNightBg from "../components/DayNightBg";
 import AnimatedWeatherIcon from "../components/AnimatedWeatherIcon";
 import WeatherIconInfo from "../components/WeatherIconInfo";
+import { PiMoonStars } from "react-icons/pi";
+import { PiSun } from "react-icons/pi";
 
 const Forecast = () => {
   const location = useLocation();
@@ -66,19 +66,17 @@ const Forecast = () => {
   const getInfo = (category) => {
     if (forecastData && forecastData.current) {
       if (category === "is_day") return forecastData.current[category];
-      return `${forecastData.current[category]} ${forecastData.current_units[category]}`;
+      return `${forecastData.current[category]}${forecastData.current_units[category]}`;
     }
   };
 
-  const displayWeather = (category, isDesktopView) => {
-    return (
-      <WeatherIconInfo
-        category={category}
-        isDesktopView={isDesktopView}
-        forecastData={forecastData}
-      />
-    );
-  };
+  const displayWeather = (category, isDesktopView) => (
+    <WeatherIconInfo
+      category={category}
+      isDesktopView={isDesktopView}
+      forecastData={forecastData}
+    />
+  );
 
   const renderDesktopView = () => (
     <Hide below={"48em"}>
@@ -112,11 +110,11 @@ const Forecast = () => {
       >
         <Text
           color="black"
-          fontSize="3xl"
+          fontSize="4xl"
           fontWeight={"500"}
           alignSelf={"center"}
         >
-          {getInfo("is_day") ? <BsSun /> : <BsMoonStars />}
+          {getInfo("is_day") ? <PiSun /> : <PiMoonStars />}
         </Text>
 
         <Flex
@@ -171,7 +169,7 @@ const Forecast = () => {
           alignSelf={"center"}
           pb={"15px"}
         >
-          {getInfo("is_day") ? <BsSun /> : <BsMoonStars />}
+          {getInfo("is_day") ? <PiSun /> : <PiMoonStars />}
         </Text>
         <Text color="black" fontSize="sm" fontWeight={"600"}>
           {location.state.name}, {location.state.admin1},{" "}
@@ -248,8 +246,14 @@ const Forecast = () => {
           mt={["100px", null, null, null]}
           zIndex={"2"}
         >
-          {renderDesktopView()}
-          {renderMobileView()}
+          {loading ? (
+            <Spinner alignSelf={"center"} size={"xl"} thickness="5px" />
+          ) : (
+            <Fragment>
+              {renderDesktopView()}
+              {renderMobileView()}
+            </Fragment>
+          )}
         </Flex>
         <DayNightBg
           isDay={
