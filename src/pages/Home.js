@@ -5,6 +5,7 @@ import { getLocationsFromSearch } from "../apis/WeatherAPI";
 import useDebounce from "../hooks/useDebounce";
 import { WiSunrise } from "react-icons/wi";
 import ResultsBox from "../components/ResultsBox";
+import DayNightBg from "../components/DayNightBg";
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -39,12 +40,9 @@ const Home = () => {
     >
       <Icon
         as={WiSunrise}
-        // boxSize={20}
         color="#FFB300"
         id="sun-icon-logo"
-        // w={40}
         w={[20, null, 20, null]}
-        // h={20}
         h={[40, null, 40, null]}
         mt={"-40px"}
       />
@@ -54,7 +52,6 @@ const Home = () => {
         bgClip="text"
         fontSize={["5xl", "6xl", "7xl", null]}
         fontWeight="600"
-        // textShadow="#FFDF00 5px 5px 10px"
         mt={["-60px", null, "-50px", null]}
         letterSpacing={"-1px"}
         pl={["30px", null, null, null]}
@@ -102,13 +99,8 @@ const Home = () => {
     <Flex
       width={"100vw"}
       height={"100vh"}
-      // alignContent={"center"}
       justifyContent={"center"}
-      // flexDirection="column"
       alignItems={"center"}
-      // bgImage="url(./killmong.jpg)"
-      // bgSize={"cover"}
-      // bgColor={"black"}
       bgGradient="linear(to-l, #66b2ff, #39f, #007fff)"
     >
       <Flex
@@ -145,19 +137,9 @@ const Home = () => {
               mr="auto"
             />
           )}
-          {/* <Box textAlign="center" ml="auto" mr="auto"> */}
           <ResultsBox searchResults={searchResults} />
-          {/* </Box> */}
         </Flex>
-        <Box
-          width={"100vw"}
-          height={"100vh"}
-          bgGradient="radial-gradient(#FFBC00, #F4D150)"
-          // bg={"#E3B60F"}
-          sx={{ "clip-path": "circle(25% at 100vw 100vh)" }}
-          position={"absolute"}
-          zIndex={"1"}
-        />
+        <DayNightBg isDay={true} />
       </Flex>
     </Flex>
   );

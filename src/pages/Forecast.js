@@ -1,5 +1,5 @@
 import { Box, Flex, Hide, Show, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, React } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { getForecastFromLocation } from "../apis/WeatherAPI";
 import ReactAnimatedWeather from "react-animated-weather";
@@ -9,6 +9,7 @@ import { WiHumidity } from "react-icons/wi";
 import { IoRainyOutline } from "react-icons/io5";
 import { FiWind } from "react-icons/fi";
 import { HiStar } from "react-icons/hi";
+import DayNightBg from "../components/DayNightBg";
 
 const Forecast = () => {
   const location = useLocation();
@@ -48,7 +49,7 @@ const Forecast = () => {
       );
   };
 
-  const displayWeatherIcon = () => {
+  const displayAnimatedIcon = () => {
     if (forecastData && forecastData.current) {
       let fData = forecastData.current;
       let icon = fData.is_day ? "CLEAR_DAY" : "CLEAR_NIGHT";
@@ -68,59 +69,72 @@ const Forecast = () => {
     }
   };
 
-  const displayStars = (starPosList) => (
-    <Box>
-      {starPosList.map((starPos) => (
-        <Text
-          fontSize={"8xl"}
-          position={"absolute"}
-          zIndex={"1"}
-          color={"#CAC9C3"}
-          top={starPos.top}
-          right={starPos.right}
-          bottom={starPos.bottom}
-          left={starPos.left}
-        >
-          <HiStar />
-        </Text>
-      ))}
-    </Box>
-  );
+  const setColorTheme = () => {
+    return forecastData && forecastData.current && forecastData.current.is_day
+      ? "linear(to-l, #66b2ff, #39f, #007fff)"
+      : "linear(to-r, #051020, #081830, #0C2244)";
+  };
 
-  const setColorTheme = (pageElement) => {
-    if (pageElement && pageElement === "sunOrMoon") {
-      let gradient =
-        forecastData && forecastData.current && forecastData.current.is_day
-          ? "radial-gradient(#FFBC00, #F4D150)"
-          : "radial-gradient(#E2DCC8, #CAC9C3)";
-      return (
-        <Box
-          width={"100vw"}
-          height={"100vh"}
-          bgGradient={gradient}
-          sx={{ "clip-path": "circle(25% at 100vw 100vh)" }}
-          position={"absolute"}
-          zIndex={"1"}
-        />
-      );
-    }
-
-    if (pageElement && pageElement === "bgColor") {
-      let gradient =
-        forecastData && forecastData.current && forecastData.current.is_day
-          ? "linear(to-l, #66b2ff, #39f, #007fff)"
-          : "linear(to-r, #051020, #081830, #0C2244)";
-
-      return gradient;
+  const returnInfo = (category) => {
+    if (forecastData && forecastData.current) {
+      if (category === "is_day") return forecastData.current[category];
+      return `${forecastData.current[category]} ${forecastData.current_units[category]}`;
     }
   };
 
-  const returnInfo = (weatherInfo, isUnit) => {
-    if (forecastData && forecastData.current) {
-      return !isUnit
-        ? forecastData.current[weatherInfo]
-        : forecastData.current_units[weatherInfo];
+  const iconComponents = {
+    WiHumidity: WiHumidity,
+    IoRainyOutline: IoRainyOutline,
+    FiWind: FiWind,
+  };
+
+  const displayWeatherIcon = (styleProps, iconType) => {
+    const IconComponent = iconType && iconComponents[iconType];
+    return <Text {...styleProps}>{IconComponent && <IconComponent />}</Text>;
+  };
+
+  const displayWeatherValue = (styleProps, displayText, categoryParameter) => {
+    return (
+      <Text {...styleProps}>
+        {displayText} {returnInfo(categoryParameter)}
+      </Text>
+    );
+  };
+
+  const displayWeather = (category, isDesktopView) => {
+    let displayText = "";
+    let categoryParameter = "";
+    const iconStyle = isDesktopView
+      ? { fontSize: "5xl", alignSelf: "center" }
+      : { fontSize: "4xl", alignSelf: "center", mt: "10px", mb: "5px" };
+    let icon = "";
+
+    const textStyle = isDesktopView
+      ? { fontSize: "lg", mt: "1rem" }
+      : { fontSize: "md" };
+
+    if (category === "humidity") {
+      displayText = "Humidity";
+      categoryParameter = "relative_humidity_2m";
+      icon = "WiHumidity";
     }
+    if (category === "precipitation") {
+      displayText = "Precipitation";
+      categoryParameter = "precipitation";
+      icon = "IoRainyOutline";
+    }
+    if (category === "wind speed") {
+      displayText = "Wind Speed";
+      categoryParameter = "wind_speed_10m";
+      icon = "FiWind";
+    }
+
+    return (
+      <Flex flexDirection={"column"} justifyContent={"center"}>
+        {displayWeatherIcon(iconStyle, icon)}
+        {displayWeatherValue(textStyle, displayText, categoryParameter)}
+      </Flex>
+    );
   };
 
   const renderDesktopView = () => (
@@ -128,16 +142,9 @@ const Forecast = () => {
       <Flex
         justifyContent={"center"}
         alignItems={"center"}
-        // w={"100%"}
         flexDirection={"column"}
       >
-        <Text
-          color="black"
-          // ml={[25, null, null, 30]}
-          // mr={[25, null, null, 30]}
-          fontSize="md"
-          fontWeight={"600"}
-        >
+        <Text color="black" fontSize="md" fontWeight={"600"}>
           {location.state.name}, {location.state.admin1},{" "}
           {location.state.country} ({location.state.country_code})
         </Text>
@@ -151,18 +158,9 @@ const Forecast = () => {
           mt={"5rem"}
           mb={"5rem"}
         >
-          {returnInfo("temperature_2m", false)}
-          {returnInfo("temperature_2m", true)}
+          {returnInfo("temperature_2m")}
         </Text>
-        <Flex flexDirection={"column"} justifyContent={"center"}>
-          <Text fontSize={"5xl"} alignSelf={"center"}>
-            <WiHumidity />
-          </Text>
-          <Text fontSize={"lg"} mt={"1rem"}>
-            Humidity {returnInfo("relative_humidity_2m", false)}
-            {returnInfo("relative_humidity_2m", true)}
-          </Text>
-        </Flex>
+        {displayWeather("humidity", true)}
       </Flex>
       <Flex
         flexDirection={"column"}
@@ -175,20 +173,8 @@ const Forecast = () => {
           fontWeight={"500"}
           alignSelf={"center"}
         >
-          {returnInfo("is_day", false) ? <BsSun /> : <BsMoonStars />}
+          {returnInfo("is_day") ? <BsSun /> : <BsMoonStars />}
         </Text>
-
-        {/* <Text
-                color="black"
-                // ml={[25, null, null, 30]}
-                // mr={[25, null, null, 30]}
-                mb="20px"
-                fontSize="lg"
-                fontWeight={"500"}
-              >
-                {location.state.name}, {location.state.admin1},{" "}
-                {location.state.country} ({location.state.country_code})
-              </Text> */}
 
         <Flex
           alignContent={"center"}
@@ -202,7 +188,6 @@ const Forecast = () => {
             fontSize="lg"
             fontWeight={"500"}
             alignSelf={"center"}
-            // pl={"10px"}
           >
             Feels like{" "}
           </Text>
@@ -212,53 +197,21 @@ const Forecast = () => {
             fontWeight={"400"}
             alignSelf={"center"}
           >
-            {forecastData && forecastData.current
-              ? forecastData.current.apparent_temperature
-              : ""}
-            {forecastData && forecastData.current
-              ? forecastData.current_units.apparent_temperature
-              : ""}
+            {returnInfo("apparent_temperature")}
           </Text>
         </Flex>
-        <Flex flexDirection={"column"} justifyContent={"center"}>
-          <Text fontSize={"5xl"} alignSelf={"center"}>
-            <IoRainyOutline />
-          </Text>
-          <Text fontSize={"lg"} mt={"1rem"}>
-            Precipitation{" "}
-            {forecastData && forecastData.current
-              ? forecastData.current.precipitation
-              : ""}{" "}
-            {forecastData && forecastData.current
-              ? forecastData.current_units.precipitation
-              : ""}
-          </Text>
-        </Flex>
+        {displayWeather("precipitation", true)}
       </Flex>
       <Flex
         flexDirection={"column"}
         alignContent={"center"}
         justifyContent={"center"}
-        // w={"100%"}
       >
         {displayDate()}
         <Box alignSelf={"center"} mt={"5rem"} mb={"5rem"}>
-          {displayWeatherIcon()}
+          {displayAnimatedIcon()}
         </Box>
-        <Flex flexDirection={"column"} justifyContent={"center"}>
-          <Text fontSize={"5xl"} alignSelf={"center"}>
-            <FiWind />
-          </Text>
-          <Text fontSize={"lg"} mt={"1rem"}>
-            Wind Speed{" "}
-            {forecastData && forecastData.current
-              ? forecastData.current.wind_speed_10m
-              : ""}{" "}
-            {forecastData && forecastData.current
-              ? forecastData.current_units.wind_speed_10m
-              : ""}
-          </Text>
-        </Flex>
+        {displayWeather("wind speed", true)}
       </Flex>
     </Hide>
   );
@@ -268,64 +221,37 @@ const Forecast = () => {
       <Flex
         justifyContent={"center"}
         alignItems={"center"}
-        // w={"100%"}
         flexDirection={"column"}
       >
         <Text
           color="black"
-          // ml={[25, null, null, 30]}
-          // mr={[25, null, null, 30]}
           fontSize="3xl"
           fontWeight={"500"}
           alignSelf={"center"}
           pb={"15px"}
         >
-          {forecastData &&
-          forecastData.current &&
-          forecastData.current.is_day ? (
-            <BsSun />
-          ) : (
-            <BsMoonStars />
-          )}
+          {returnInfo("is_day") ? <BsSun /> : <BsMoonStars />}
         </Text>
-        <Text
-          color="black"
-          // ml={[25, null, null, 30]}
-          // mr={[25, null, null, 30]}
-          fontSize="sm"
-          fontWeight={"600"}
-        >
+        <Text color="black" fontSize="sm" fontWeight={"600"}>
           {location.state.name}, {location.state.admin1},{" "}
           {location.state.country} ({location.state.country_code})
         </Text>
         {displayDate()}
-        <Box alignSelf={"center"}>{displayWeatherIcon()}</Box>
+        <Box alignSelf={"center"}>{displayAnimatedIcon()}</Box>
         <Text
-          // bgGradient="linear(to-r, #FFB300, #FFBC00, #FFC500, #FFCD00, #FFD600, #FFDF00)"
           bgClip="text"
           fontSize={["4xl", "5xl", "7xl", null]}
           fontWeight="400"
           color="black"
-          // textShadow="#FFDF00 5px 5px 10px"
-          // mt={["-60px", null, "-50px", null]}
           letterSpacing={"-1px"}
-          // pl={["30px", null, null, null]}
-          // pr={[["30px", null, null, null]]}
-          // mt={"5rem"}
           mb={"10px"}
         >
-          {forecastData && forecastData.current
-            ? forecastData.current.temperature_2m
-            : ""}
-          {forecastData && forecastData.current
-            ? forecastData.current_units.temperature_2m
-            : ""}
+          {returnInfo("temperature_2m")}
         </Text>
         <Flex
           alignContent={"center"}
           justifyContent={"center"}
           flexDirection={"column"}
-          // mt={"5rem"}
           mb={"10px"}
         >
           <Text
@@ -333,7 +259,6 @@ const Forecast = () => {
             fontSize="sm"
             fontWeight={"500"}
             alignSelf={"center"}
-            // pl={"10px"}
           >
             Feels like{" "}
           </Text>
@@ -343,56 +268,12 @@ const Forecast = () => {
             fontWeight={"400"}
             alignSelf={"center"}
           >
-            {forecastData && forecastData.current
-              ? forecastData.current.apparent_temperature
-              : ""}
-            {forecastData && forecastData.current
-              ? forecastData.current_units.apparent_temperature
-              : ""}
+            {returnInfo("apparent_temperature")}
           </Text>
         </Flex>
-        <Flex flexDirection={"column"} justifyContent={"center"}>
-          <Text fontSize={"4xl"} alignSelf={"center"} mt={"10px"} mb={"5px"}>
-            <WiHumidity />
-          </Text>
-          <Text fontSize={"md"}>
-            Humidity{" "}
-            {forecastData && forecastData.current
-              ? forecastData.current.relative_humidity_2m
-              : ""}
-            {forecastData && forecastData.current
-              ? forecastData.current_units.relative_humidity_2m
-              : ""}
-          </Text>
-        </Flex>
-        <Flex flexDirection={"column"} justifyContent={"center"}>
-          <Text fontSize={"4xl"} alignSelf={"center"} mt={"10px"} mb={"5px"}>
-            <IoRainyOutline />
-          </Text>
-          <Text fontSize={"md"}>
-            Precipitation{" "}
-            {forecastData && forecastData.current
-              ? forecastData.current.precipitation
-              : ""}{" "}
-            {forecastData && forecastData.current
-              ? forecastData.current_units.precipitation
-              : ""}
-          </Text>
-        </Flex>
-        <Flex flexDirection={"column"} justifyContent={"center"}>
-          <Text fontSize={"4xl"} alignSelf={"center"} mt={"10px"} mb={"5px"}>
-            <FiWind />
-          </Text>
-          <Text fontSize={"md"}>
-            Wind Speed{" "}
-            {forecastData && forecastData.current
-              ? forecastData.current.wind_speed_10m
-              : ""}{" "}
-            {forecastData && forecastData.current
-              ? forecastData.current_units.wind_speed_10m
-              : ""}
-          </Text>
-        </Flex>
+        {displayWeather("humidity", false)}
+        {displayWeather("precipitation", false)}
+        {displayWeather("wind speed", false)}
       </Flex>
     </Show>
   );
@@ -401,14 +282,9 @@ const Forecast = () => {
     <Flex
       width={"100vw"}
       height={"100vh"}
-      // alignContent={"center"}
       justifyContent={"center"}
-      // flexDirection="column"
       alignItems={"center"}
-      // bgImage="url(./killmong.jpg)"
-      // bgSize={"cover"}
-      // bgColor={"black"}
-      bgGradient={setColorTheme("bgColor")}
+      bgGradient={setColorTheme()}
     >
       <Flex
         width={"100vw"}
@@ -433,14 +309,12 @@ const Forecast = () => {
         >
           {renderDesktopView()}
           {renderMobileView()}
-          {/* Mobile Screen */}
         </Flex>
-        {setColorTheme("sunOrMoon")}
-        {displayStars([
-          { top: "21vh", right: "", bottom: "", left: "21vw" },
-          { top: "", right: "", bottom: "20vh", left: "30vw" },
-          { top: "30vh", right: "20vw", bottom: "", left: "" },
-        ])}
+        <DayNightBg
+          isDay={
+            forecastData && forecastData.current && forecastData.current.is_day
+          }
+        />
       </Flex>
     </Flex>
   );
