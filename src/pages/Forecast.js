@@ -1,4 +1,4 @@
-import { Flex, Hide, Show, Spinner, Text } from "@chakra-ui/react";
+import { Button, Flex, Hide, Show, Spinner, Text } from "@chakra-ui/react";
 import { useEffect, useState, React, Fragment } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { getForecastFromLocation } from "../apis/WeatherAPI";
@@ -34,6 +34,7 @@ const Forecast = () => {
           fontSize={["sm", null, "lg", null]}
           fontWeight={["400", null, null, "500"]}
           mb={["5px", null, "-15px", null]}
+          color={setColorTheme("font")}
         >
           {new Date(forecastData.current.time).toLocaleString()}{" "}
           {forecastData.timezone}
@@ -41,21 +42,39 @@ const Forecast = () => {
       );
   };
 
-  const displayAnimatedIcon = (styleProps) => {
+  const displayAnimatedIcon = (styleProps, color, isMobileView) => {
     if (forecastData && forecastData.current) {
       return (
         <AnimatedWeatherIcon
           forecastData={forecastData}
           styleProps={styleProps}
+          color={color}
+          isMobileView={isMobileView}
         />
       );
     }
   };
 
-  const setBgColorTheme = () => {
-    return forecastData && forecastData.current && forecastData.current.is_day
-      ? "linear(to-l, #66b2ff, #39f, #007fff)"
-      : "linear(to-r, #051020, #081830, #0C2244)";
+  const setColorTheme = (element) => {
+    if (forecastData && forecastData.current) {
+      if (element === "bg") {
+        return forecastData.current.is_day
+          ? "linear(to-l, #66b2ff, #39f, #007fff)"
+          : "linear(to-r, #051020, #081830, #0C2244)";
+      }
+
+      if (element === "fontLg") {
+        return forecastData.current.is_day ? "#FFB74C" : "#352D65";
+      }
+
+      if (element === "font") {
+        return forecastData.current.is_day ? "#00468A" : "#5E5B49";
+      }
+
+      if (element === "fontMd") {
+        return forecastData.current.is_day ? "#003161" : "#666";
+      }
+    }
   };
 
   const getInfo = (category) => {
@@ -70,6 +89,7 @@ const Forecast = () => {
       category={category}
       isDesktopView={isDesktopView}
       forecastData={forecastData}
+      fontColor={setColorTheme("font")}
     />
   );
 
@@ -80,7 +100,7 @@ const Forecast = () => {
         alignItems={"center"}
         flexDirection={"column"}
       >
-        <Text color="black" fontSize="md" fontWeight={"600"}>
+        <Text color={setColorTheme("font")} fontSize="md" fontWeight={"600"}>
           {location.state.name}, {location.state.admin1},{" "}
           {location.state.country} ({location.state.country_code})
         </Text>
@@ -89,7 +109,7 @@ const Forecast = () => {
           bgClip="text"
           fontSize={["5xl", "6xl", "7xl", null]}
           fontWeight="400"
-          color="black"
+          color={setColorTheme("fontLg")}
           letterSpacing={"-1px"}
           mt={"5rem"}
           mb={"5rem"}
@@ -104,8 +124,8 @@ const Forecast = () => {
         justifyContent={"center"}
       >
         <Text
-          color="black"
-          fontSize="4xl"
+          color={setColorTheme("font")}
+          fontSize={() => (getInfo("is_day") ? "5xl" : "4xl")}
           fontWeight={"500"}
           alignSelf={"center"}
         >
@@ -120,7 +140,7 @@ const Forecast = () => {
           mb={"5rem"}
         >
           <Text
-            color="#666"
+            color={setColorTheme("fontMd")}
             fontSize="lg"
             fontWeight={"500"}
             alignSelf={"center"}
@@ -128,7 +148,7 @@ const Forecast = () => {
             Feels like{" "}
           </Text>
           <Text
-            color="#666"
+            color={setColorTheme("fontMd")}
             fontSize="5xl"
             fontWeight={"400"}
             alignSelf={"center"}
@@ -144,7 +164,11 @@ const Forecast = () => {
         justifyContent={"center"}
       >
         {displayDate()}
-        {displayAnimatedIcon({ alignSelf: "center", mt: "5rem", mb: "5rem" })}
+        {displayAnimatedIcon(
+          { alignSelf: "center", mt: "5rem", mb: "5rem" },
+          setColorTheme("fontLg"),
+          false
+        )}
         {displayWeather("wind speed", true)}
       </Flex>
     </Hide>
@@ -158,25 +182,29 @@ const Forecast = () => {
         flexDirection={"column"}
       >
         <Text
-          color="black"
-          fontSize="3xl"
+          color={setColorTheme("font")}
+          fontSize={() => (getInfo("is_day") ? "4xl" : "3xl")}
           fontWeight={"500"}
           alignSelf={"center"}
           pb={"15px"}
         >
           {getInfo("is_day") ? <PiSun /> : <FaRegMoon />}
         </Text>
-        <Text color="black" fontSize="sm" fontWeight={"600"}>
+        <Text color={setColorTheme("font")} fontSize="sm" fontWeight={"600"}>
           {location.state.name}, {location.state.admin1},{" "}
           {location.state.country} ({location.state.country_code})
         </Text>
         {displayDate()}
-        {displayAnimatedIcon({ alignSelf: "center" })}
+        {displayAnimatedIcon(
+          { alignSelf: "center" },
+          setColorTheme("fontLg"),
+          true
+        )}
         <Text
           bgClip="text"
           fontSize={["4xl", "5xl", "7xl", null]}
           fontWeight="400"
-          color="black"
+          color={setColorTheme("fontLg")}
           letterSpacing={"-1px"}
           mb={"10px"}
         >
@@ -189,7 +217,7 @@ const Forecast = () => {
           mb={"10px"}
         >
           <Text
-            color="#666"
+            color={setColorTheme("fontMd")}
             fontSize="sm"
             fontWeight={"500"}
             alignSelf={"center"}
@@ -197,7 +225,7 @@ const Forecast = () => {
             Feels like{" "}
           </Text>
           <Text
-            color="#666"
+            color={setColorTheme("fontMd")}
             fontSize="2xl"
             fontWeight={"400"}
             alignSelf={"center"}
@@ -221,15 +249,20 @@ const Forecast = () => {
           flexDirection={"column"}
         >
           <Text
-            color="black"
-            fontSize="3xl"
+            color={setColorTheme("font")}
+            fontSize={() => (getInfo("is_day") ? "5xl" : "4xl")}
             fontWeight={"500"}
             alignSelf={"center"}
             mb={"-10px"}
           >
             {getInfo("is_day") ? <PiSun /> : <FaRegMoon />}
           </Text>
-          <Text color="black" fontSize="md" fontWeight={"600"} mb={"-35px"}>
+          <Text
+            color={setColorTheme("font")}
+            fontSize="md"
+            fontWeight={"600"}
+            mb={"-35px"}
+          >
             {location.state.name}, {location.state.admin1},{" "}
             {location.state.country} ({location.state.country_code})
           </Text>
@@ -245,7 +278,7 @@ const Forecast = () => {
                 bgClip="text"
                 fontSize={["4xl", "5xl", "7xl", null]}
                 fontWeight="400"
-                color="black"
+                color={setColorTheme("fontLg")}
                 letterSpacing={"-1px"}
                 mb={"-10px"}
               >
@@ -258,7 +291,7 @@ const Forecast = () => {
                 mb={"10px"}
               >
                 <Text
-                  color="#666"
+                  color={setColorTheme("fontMd")}
                   fontSize="sm"
                   fontWeight={"500"}
                   alignSelf={"center"}
@@ -267,7 +300,7 @@ const Forecast = () => {
                   Feels like{" "}
                 </Text>
                 <Text
-                  color="#666"
+                  color={setColorTheme("fontMd")}
                   fontSize="xl"
                   fontWeight={"400"}
                   alignSelf={"center"}
@@ -276,7 +309,11 @@ const Forecast = () => {
                 </Text>
               </Flex>
             </Flex>
-            {displayAnimatedIcon({ alignSelf: "center", pb: "40px" })}
+            {displayAnimatedIcon(
+              { alignSelf: "center", pb: "40px" },
+              setColorTheme("fontLg"),
+              false
+            )}
           </Flex>
           <Flex
             flexDirection={"row"}
@@ -300,7 +337,7 @@ const Forecast = () => {
       height={"100vh"}
       justifyContent={"center"}
       alignItems={"center"}
-      bgGradient={setBgColorTheme()}
+      bgGradient={setColorTheme("bg")}
     >
       <Flex
         width={"100vw"}
@@ -334,19 +371,32 @@ const Forecast = () => {
             </Fragment>
           )}
         </Flex>
-        <DayNightBg
-          isDay={
-            forecastData && forecastData.current && forecastData.current.is_day
-          }
-        />
+        {loading ? (
+          <></>
+        ) : (
+          <Fragment>
+            <DayNightBg
+              isDay={
+                forecastData &&
+                forecastData.current &&
+                forecastData.current.is_day
+              }
+            />
 
-        <Show above="48em">
-          <Link to={"/"}>
-            <Text as={"ins"} color={"white"} fontSize={"2xl"}>
-              back
-            </Text>
-          </Link>
-        </Show>
+            <Show above="48em">
+              <Link to={"/"}>
+                <Button
+                  colorScheme="whiteAlpha"
+                  variant="solid"
+                  color={setColorTheme("font")}
+                  bg={"white"}
+                >
+                  Back
+                </Button>
+              </Link>
+            </Show>
+          </Fragment>
+        )}
       </Flex>
     </Flex>
   );

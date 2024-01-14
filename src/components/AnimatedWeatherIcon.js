@@ -2,7 +2,12 @@ import { Box } from "@chakra-ui/react";
 import React from "react";
 import ReactAnimatedWeather from "react-animated-weather";
 
-const AnimatedWeatherIcon = ({ forecastData, styleProps }) => {
+const AnimatedWeatherIcon = ({
+  forecastData,
+  styleProps,
+  color,
+  isMobileView,
+}) => {
   const selectIcon = () => {
     if (forecastData && forecastData.current) {
       let fData = forecastData.current;
@@ -16,8 +21,8 @@ const AnimatedWeatherIcon = ({ forecastData, styleProps }) => {
       return (
         <ReactAnimatedWeather
           icon={icon}
-          color={"black"}
-          size={110}
+          color={color}
+          size={isMobileView ? 64 : 110}
           animate={true}
         />
       );
