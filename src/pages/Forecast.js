@@ -5,8 +5,8 @@ import { getForecastFromLocation } from "../apis/WeatherAPI";
 import DayNightBg from "../components/DayNightBg";
 import AnimatedWeatherIcon from "../components/AnimatedWeatherIcon";
 import WeatherIconInfo from "../components/WeatherIconInfo";
-import { PiMoonStars } from "react-icons/pi";
 import { PiSun } from "react-icons/pi";
+import { FaRegMoon } from "react-icons/fa";
 
 const Forecast = () => {
   const location = useLocation();
@@ -109,7 +109,7 @@ const Forecast = () => {
           fontWeight={"500"}
           alignSelf={"center"}
         >
-          {getInfo("is_day") ? <PiSun /> : <PiMoonStars />}
+          {getInfo("is_day") ? <PiSun /> : <FaRegMoon />}
         </Text>
 
         <Flex
@@ -164,7 +164,7 @@ const Forecast = () => {
           alignSelf={"center"}
           pb={"15px"}
         >
-          {getInfo("is_day") ? <PiSun /> : <PiMoonStars />}
+          {getInfo("is_day") ? <PiSun /> : <FaRegMoon />}
         </Text>
         <Text color="black" fontSize="sm" fontWeight={"600"}>
           {location.state.name}, {location.state.admin1},{" "}
@@ -227,7 +227,7 @@ const Forecast = () => {
             alignSelf={"center"}
             mb={"-10px"}
           >
-            {getInfo("is_day") ? <PiSun /> : <PiMoonStars />}
+            {getInfo("is_day") ? <PiSun /> : <FaRegMoon />}
           </Text>
           <Text color="black" fontSize="md" fontWeight={"600"} mb={"-35px"}>
             {location.state.name}, {location.state.admin1},{" "}
@@ -307,6 +307,7 @@ const Forecast = () => {
         height={"100vh"}
         justifyContent={"center"}
         alignItems={"center"}
+        flexDirection={"column"}
       >
         <Flex
           width={["80%", null, "70%", "50%"]}
@@ -338,6 +339,14 @@ const Forecast = () => {
             forecastData && forecastData.current && forecastData.current.is_day
           }
         />
+
+        <Show above="48em">
+          <Link to={"/"}>
+            <Text as={"ins"} color={"white"} fontSize={"2xl"}>
+              back
+            </Text>
+          </Link>
+        </Show>
       </Flex>
     </Flex>
   );

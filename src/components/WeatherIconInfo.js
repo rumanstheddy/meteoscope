@@ -1,12 +1,13 @@
 import { Flex, Text } from "@chakra-ui/react";
 import React, { Fragment } from "react";
-import { WiHumidity } from "react-icons/wi";
+import { MdOutlineWaterDrop } from "react-icons/md";
+import { IoWaterOutline } from "react-icons/io5";
 import { IoRainyOutline } from "react-icons/io5";
 import { FiWind } from "react-icons/fi";
 
 const WeatherIconInfo = ({ category, isDesktopView, forecastData }) => {
   const iconComponents = {
-    WiHumidity: WiHumidity,
+    IoWaterOutline: IoWaterOutline,
     IoRainyOutline: IoRainyOutline,
     FiWind: FiWind,
   };
@@ -46,7 +47,7 @@ const WeatherIconInfo = ({ category, isDesktopView, forecastData }) => {
     if (category === "humidity") {
       displayText = "Humidity";
       categoryParameter = "relative_humidity_2m";
-      icon = "WiHumidity";
+      icon = "IoWaterOutline";
     }
     if (category === "precipitation") {
       displayText = "Precipitation";
