@@ -123,7 +123,7 @@ const Home = () => {
           mt={["100px", null, null, null]}
           zIndex={"2"}
         >
-          {/* TODO: make the web page transparent */}
+          {/* TODO: Add dark mode */}
           {displayHomeInfo()}
           {displayInputBox()}
           {/* TODO: Learn more about async, await and map function */}

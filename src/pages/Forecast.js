@@ -213,79 +213,85 @@ const Forecast = () => {
   );
 
   const renderTabletView = () => (
-    <Show above="48em">
-      <Flex
-        justifyContent={"space-around"}
-        alignItems={"center"}
-        flexDirection={"column"}
-      >
-        <Text
-          color="black"
-          fontSize="3xl"
-          fontWeight={"500"}
-          alignSelf={"center"}
-          mb={"-10px"}
-        >
-          {getInfo("is_day") ? <PiSun /> : <PiMoonStars />}
-        </Text>
-        <Text color="black" fontSize="md" fontWeight={"600"} mb={"-10px"}>
-          {location.state.name}, {location.state.admin1},{" "}
-          {location.state.country} ({location.state.country_code})
-        </Text>
-        {displayDate()}
-
-        <Flex flexDirection={"row"} justifyContent={"space-between"}>
-          <Flex flexDirection={"column"} justifyContent={"center"} mr={"50px"}>
-            <Text
-              bgClip="text"
-              fontSize={["4xl", "5xl", "7xl", null]}
-              fontWeight="400"
-              color="black"
-              letterSpacing={"-1px"}
-              mb={"-10px"}
-            >
-              {getInfo("temperature_2m")}
-            </Text>
-            <Flex
-              alignContent={"center"}
-              justifyContent={"center"}
-              flexDirection={"row"}
-              mb={"10px"}
-            >
-              <Text
-                color="#666"
-                fontSize="sm"
-                fontWeight={"500"}
-                alignSelf={"center"}
-                pr={"5px"}
-              >
-                Feels like{" "}
-              </Text>
-              <Text
-                color="#666"
-                fontSize="xl"
-                fontWeight={"400"}
-                alignSelf={"center"}
-              >
-                {getInfo("apparent_temperature")}
-              </Text>
-            </Flex>
-          </Flex>
-          {displayAnimatedIcon({ alignSelf: "center", pb: "40px" })}
-        </Flex>
+    <Hide above={"80em"}>
+      <Show above="48em">
         <Flex
-          flexDirection={"row"}
           justifyContent={"space-around"}
-          gap={"50px"}
-          mb={"-10px"}
+          alignItems={"center"}
+          flexDirection={"column"}
         >
-          {displayWeather("humidity", false)}
-          {displayWeather("precipitation", false)}
-        </Flex>
+          <Text
+            color="black"
+            fontSize="3xl"
+            fontWeight={"500"}
+            alignSelf={"center"}
+            mb={"-10px"}
+          >
+            {getInfo("is_day") ? <PiSun /> : <PiMoonStars />}
+          </Text>
+          <Text color="black" fontSize="md" fontWeight={"600"} mb={"-35px"}>
+            {location.state.name}, {location.state.admin1},{" "}
+            {location.state.country} ({location.state.country_code})
+          </Text>
+          {displayDate()}
 
-        {displayWeather("wind speed", false)}
-      </Flex>
-    </Show>
+          <Flex flexDirection={"row"} justifyContent={"space-between"}>
+            <Flex
+              flexDirection={"column"}
+              justifyContent={"center"}
+              mr={"50px"}
+            >
+              <Text
+                bgClip="text"
+                fontSize={["4xl", "5xl", "7xl", null]}
+                fontWeight="400"
+                color="black"
+                letterSpacing={"-1px"}
+                mb={"-10px"}
+              >
+                {getInfo("temperature_2m")}
+              </Text>
+              <Flex
+                alignContent={"center"}
+                justifyContent={"center"}
+                flexDirection={"row"}
+                mb={"10px"}
+              >
+                <Text
+                  color="#666"
+                  fontSize="sm"
+                  fontWeight={"500"}
+                  alignSelf={"center"}
+                  pr={"5px"}
+                >
+                  Feels like{" "}
+                </Text>
+                <Text
+                  color="#666"
+                  fontSize="xl"
+                  fontWeight={"400"}
+                  alignSelf={"center"}
+                >
+                  {getInfo("apparent_temperature")}
+                </Text>
+              </Flex>
+            </Flex>
+            {displayAnimatedIcon({ alignSelf: "center", pb: "40px" })}
+          </Flex>
+          <Flex
+            flexDirection={"row"}
+            justifyContent={"space-around"}
+            gap={"50px"}
+            mb={"-10px"}
+          >
+            {displayWeather("humidity", false)}
+            {displayWeather("precipitation", false)}
+          </Flex>
+
+          {displayWeather("wind speed", false)}
+        </Flex>
+      </Show>
+    </Hide>
   );
 
   return (
@@ -314,7 +320,7 @@ const Forecast = () => {
           pb={"40px"}
           mb={"100px"}
           bg={"white"}
-          mt={["100px", null, null, null]}
+          mt={["100px", null, "50px", "100px"]}
           zIndex={"2"}
         >
           {loading ? (
