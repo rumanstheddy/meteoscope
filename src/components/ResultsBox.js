@@ -19,7 +19,6 @@ const ResultsBox = ({ searchResults }) => {
     >
       {searchResults &&
         searchResults.map((location) => {
-          console.log(searchResults);
           return (
             <Link
               to="/forecast"

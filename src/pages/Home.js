@@ -15,7 +15,6 @@ const Home = () => {
   const debouncedSearchQuery = useDebounce(searchQuery);
 
   useEffect(() => {
-    console.log(debouncedSearchQuery);
     const fetchResults = async () => {
       setLoading(true);
       getLocationsFromSearch(debouncedSearchQuery, 5).then((data) => {
