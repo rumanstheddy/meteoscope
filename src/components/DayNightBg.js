@@ -29,19 +29,19 @@ const DayNightBg = ({ isDay }) => {
   return (
     <Fragment>
       <Box
-        width={"100vw"}
-        height={"100vh"}
+        width={"100%"}
+        height={"100%"}
         bgGradient={gradient}
-        sx={{ "clip-path": "circle(25% at 100vw 100vh)" }}
+        sx={{ "clip-path": "circle(25% at 100% 100%)" }}
         position={"absolute"}
         zIndex={"1"}
       />
       {isDay
         ? ""
         : displayStars([
-            { top: "21vh", right: "", bottom: "", left: "21vw" },
-            { top: "", right: "", bottom: "20vh", left: "30vw" },
-            { top: "30vh", right: "20vw", bottom: "", left: "" },
+            { top: "18vh", right: "", bottom: "", left: "21vw" },
+            { top: "", right: "", bottom: "15vh", left: "30vw" },
+            { top: "50vh", right: "8vw", bottom: "", left: "" },
           ])}
     </Fragment>
   );

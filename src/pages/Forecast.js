@@ -1,4 +1,12 @@
-import { Button, Flex, Hide, Show, Spinner, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Hide,
+  IconButton,
+  Show,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 import { useEffect, useState, React, Fragment } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { getForecastFromLocation } from "../apis/WeatherAPI";
@@ -7,6 +15,7 @@ import AnimatedWeatherIcon from "../components/AnimatedWeatherIcon";
 import WeatherIconInfo from "../components/WeatherIconInfo";
 import { PiSun } from "react-icons/pi";
 import { FaRegMoon } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
 
 const Forecast = () => {
   const location = useLocation();
@@ -333,12 +342,31 @@ const Forecast = () => {
 
   return (
     <Flex
-      width={"100vw"}
-      height={"100vh"}
+      width={"100%"}
+      height={"90%"}
       justifyContent={"center"}
       alignItems={"center"}
+      flexDirection={"column"}
       bgGradient={setColorTheme("bg")}
     >
+      <Flex w={"100%"}>
+        <Show below="48em">
+          <Link to={"/"}>
+            <IconButton
+              colorScheme="whiteAlpha"
+              variant="solid"
+              color={setColorTheme("font")}
+              bg={"white"}
+              isRound={true}
+              icon={<IoClose />}
+              fontSize={"35px"}
+              size={"lg"}
+              ml={"20px"}
+              mt={"55px"}
+            ></IconButton>
+          </Link>
+        </Show>
+      </Flex>
       <Flex
         width={"100vw"}
         height={"100vh"}
@@ -358,7 +386,7 @@ const Forecast = () => {
           pb={"40px"}
           mb={"100px"}
           bg={"white"}
-          mt={["100px", null, "50px", "100px"]}
+          mt={["60px", null, "50px", "100px"]}
           zIndex={"2"}
         >
           {loading ? (
@@ -375,13 +403,13 @@ const Forecast = () => {
           <></>
         ) : (
           <Fragment>
-            <DayNightBg
+            {/* <DayNightBg
               isDay={
                 forecastData &&
                 forecastData.current &&
                 forecastData.current.is_day
               }
-            />
+            /> */}
 
             <Show above="48em">
               <Link to={"/"}>
@@ -398,6 +426,19 @@ const Forecast = () => {
           </Fragment>
         )}
       </Flex>
+      {loading ? (
+        <></>
+      ) : (
+        <Fragment>
+          <DayNightBg
+            isDay={
+              forecastData &&
+              forecastData.current &&
+              forecastData.current.is_day
+            }
+          />
+        </Fragment>
+      )}
     </Flex>
   );
 };
