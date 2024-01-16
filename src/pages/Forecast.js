@@ -403,14 +403,6 @@ const Forecast = () => {
           <></>
         ) : (
           <Fragment>
-            {/* <DayNightBg
-              isDay={
-                forecastData &&
-                forecastData.current &&
-                forecastData.current.is_day
-              }
-            /> */}
-
             <Show above="48em">
               <Link to={"/"}>
                 <Button
