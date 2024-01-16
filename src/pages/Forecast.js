@@ -64,15 +64,15 @@ const Forecast = () => {
       }
 
       if (element === "fontLg") {
-        return forecastData.current.is_day ? "#FFB74C" : "#352D65";
+        return forecastData.current.is_day ? "#FFB74C" : "#666";
       }
 
       if (element === "font") {
-        return forecastData.current.is_day ? "#00468A" : "#5E5B49";
+        return forecastData.current.is_day ? "#00468A" : "#081730";
       }
 
       if (element === "fontMd") {
-        return forecastData.current.is_day ? "#003161" : "#666";
+        return forecastData.current.is_day ? "#003161" : "#061123";
       }
     }
   };
