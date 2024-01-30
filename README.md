@@ -1,4 +1,4 @@
-**# Meteoscope
+# Meteoscope
 
 Meteoscope is a lightweight and user-friendly frontend application built with React, designed to fetch and display the current weather for any searched location using the [Open Meteo API](https://open-meteo.com/).
 
