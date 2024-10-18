@@ -110,14 +110,14 @@ const Home = () => {
       >
         <Flex
           width={["90%", null, "70%", "50%"]}
-          height={handleBoxHeight}
+          // height={handleBoxHeight}
           alignContent={"center"}
           justifyContent={"center"}
           flexDirection="column"
           boxShadow="2xl"
           rounded="3xl"
-          pt={"40px"}
-          pb={"40px"}
+          pt={"100px"}
+          pb={"100px"}
           mb={"100px"}
           bg={"white"}
           mt={["100px", null, null, null]}
@@ -125,19 +125,20 @@ const Home = () => {
         >
           {/* TODO: Add dark mode */}
           {displayHomeInfo()}
-          {displayInputBox()}
-          {/* TODO: Learn more about async, await and map function */}
-          {loading && (
-            <Spinner
-              mt="50px"
-              alignItems="center"
-              textAlign="center"
-              ml="auto"
-              mr="auto"
-              thickness="3px"
-            />
-          )}
-          <ResultsBox searchResults={searchResults} />
+          <Box position={"relative"}>
+            {displayInputBox()}
+            {loading && (
+              <Spinner
+                mt="50px"
+                alignItems="center"
+                textAlign="center"
+                ml="auto"
+                mr="auto"
+                thickness="3px"
+              />
+            )}
+            <ResultsBox searchResults={searchResults} />
+          </Box>
         </Flex>
         <DayNightBg isDay={true} />
       </Flex>

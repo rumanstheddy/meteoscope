@@ -6,16 +6,16 @@ const ResultsBox = ({ searchResults }) => {
   return (
     <Box
       boxShadow="md"
-      // flexDirection={"column"}
       w={["85vw", "70vw", "50vw", "40vw"]}
-      // alignItems={"center"}
-      // justifyContent={"center"}
       alignItems="center"
       borderRadius="5px"
       textAlign="center"
-      ml="auto"
-      mr="auto"
       overflow={"visible"}
+      position={"absolute"}
+      bgColor={"white"}
+      left={0}
+      right={0}
+      margin="auto"
     >
       {searchResults &&
         searchResults.map((location) => {
